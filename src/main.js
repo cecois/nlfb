@@ -22,9 +22,8 @@ firebase.initializeApp({
   databaseURL: 'https://nlfbma.firebaseio.com'
 })
 export const db = firebase.firestore()
-  // const firestore = firebase.firestore();
-  const settings = {timestampsInSnapshots: true};
-  db.settings(settings);
+const settings = {timestampsInSnapshots: true}
+db.settings(settings)
 
 /* eslint-disable no-new */
 new Vue({

@@ -16,17 +16,17 @@
   icon:<div class="mdi mdi-account"></div>
   </article>
 
- <form @submit="testAppointment(referring_agency_name)">
+ <form @submit="testAppointment(referringAgencyName)">
   <div class="tile is-ancestor">
   <div class="tile is-6 is-parent">
     <div class="tile is-child box">
       <p class="title">Referring Agency</p>
-      <p>
+
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Name</label>
   <div class="control">
-    <input class="input" type="text" v-model="referring_agency_name" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="referringAgencyName" placeholder="autofill frm prior submissions">
   </div>
 </div>
 <!-- ******************************************************************* -->
@@ -57,16 +57,13 @@
     <input class="input" type="text" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
   </div>
 </div>
-      </p>
     </div>
 </div>
 <!-- /.is-ancestor -->
-
   <div class="tile is-6 is-parent">
     <div class="tile is-child box">
       <p class="title">Client</p>
-      <p>
-      <!-- ******************************************************************* -->
+<!-- ******************************************************************* -->
       <div class="field">
         <label class="label">Client: Full Name</label>
         <div class="control">
@@ -93,8 +90,7 @@
         <div class="control">
           <input class="input" type="text" placeholder="">
         </div>
-      </div></p>
-
+      </div>
 </div>
 </div>
 </div>
@@ -205,7 +201,6 @@
     <div class="tile is-parent">
       <div class="tile is-ancestor">
   <div class="tile is-parent">
-    
     <!-- ******************************************************************* -->
     <article class="tile is-child box">
 <div class="field">
@@ -264,24 +259,18 @@
 </div><!-- /.tile.is-parent -->
 </div><!-- /.tile.is-ancestor -->
 <p class="has-text-centered"><em>(Freight elevator available if necessary.)</em></p>
-
 <hr/>
-
 <!-- ******************************************************************* -->
 <p class="has-text-centered is-size-1"><span class="icon">
   <i class="fas fa-calendar-alt"></i>
 </span></p>
-
 <hr/>
-
-
         <p class="title">Client Needs (please indicate requested items):</p>
   <div class="tile is-ancestor">
     <div class="tile is-parent">
       <div class="tile is-ancestor">
 <!-- ******************************************************************* -->
   <div class="tile is-parent">
-    
     <article class="tile is-child box">
       <div class="field">
   <label class="label">Large Items</label >
@@ -341,36 +330,35 @@ clear
 
 <script>
 
-  import { db } from '../main'
+import { db } from '../main'
 
 export default {
   name: 'Default',
   data () {
     return {
-      appointments: []
-      ,name: ''      // <-- here
-      ,image: ''
-      ,referring_agency_name: ''
+      appointments: [],
+      name: '',
+      image: '',
+      referringAgencyName: ''
     }
   },
   firestore () {
     return {
       appointments: db.collection('appointments')
     }
-  }
-  ,methods: { 
-    addAppointment (name, image) {      // <-- and here 
+  },
+  methods: {
+    addAppointment (name, image) {
       const createdAt = new Date()
       db.collection('appointments').add({ name, image, createdAt })
-    }
-    ,deleteAppointment (id) {
+    },
+    deleteAppointment (id) {
       db.collection('appointments').doc(id).delete()
-    }
-    ,testAppointment (referring_agency_name) {
-      console.log(referring_agency_name);
+    },
+    testAppointment (referringAgencyName) {
+      console.log(referringAgencyName)
     }
   }
-  
 }
 </script>
 
