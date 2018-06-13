@@ -1,7 +1,7 @@
 <template>
 <div>
 
-  <form @submit="addAppointment(name, image)">
+  <!-- <form @submit="addAppointment(name, image)">
     <input v-model="name" placeholder="Name">
     <input v-model="image" placeholder="Image URL">
     <button type="submit">Add New</button>
@@ -14,7 +14,7 @@
     Delete
   </button>
   icon:<div class="mdi mdi-account"></div>
-  </article>
+  </article> -->
 
  <form @submit="testAppointment(referringAgencyName)">
   <div class="tile is-ancestor">
@@ -33,28 +33,28 @@
 <div class="field">
   <label class="label">Agency Address</label>
   <div class="control">
-    <input class="input" type="text" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="referringAgencyAddress" placeholder="autofill frm prior submissions">
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Name</label>
   <div class="control">
-    <input class="input" type="text" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="referringAgencyContactName" placeholder="autofill frm prior submissions">
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Job Title</label>
   <div class="control">
-    <input class="input" type="text" placeholder="autofill frm prior submissionsa">
+    <input class="input" type="text" v-model="referringAgencyContactTitle" placeholder="autofill frm prior submissionsa">
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Phone Number(s)</label>
   <div class="control">
-    <input class="input" type="text" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
+    <input class="input" type="text" v-model="referringAgencyContactPhone" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
   </div>
 </div>
     </div>
@@ -67,28 +67,28 @@
       <div class="field">
         <label class="label">Client: Full Name</label>
         <div class="control">
-          <input class="input" type="text" placeholder="">
+          <input class="input" type="text" v-model="clientName" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
       <div class="field">
         <label class="label">Client: Street Address</label>
         <div class="control">
-          <input class="input" type="text" placeholder="">
+          <input class="input" type="text" v-model="clientAddressStreet" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
       <div class="field">
         <label class="label">Client: Phone #</label>
         <div class="control">
-          <input class="input" type="text" placeholder="">
+          <input class="input" type="text" v-model="clientPhone" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
       <div class="field">
         <label class="label">Client: email</label>
         <div class="control">
-          <input class="input" type="text" placeholder="">
+          <input class="input" type="text" v-model="clientEmail" placeholder="">
         </div>
       </div>
 </div>
@@ -104,7 +104,7 @@
     <article class="tile is-child box">
     <div class="field has-text-centered">
   <label class="label">What's the best way to communicate with the client?</label>
-  <div class="control">
+  <div class="control" v-model="clientCommunicatePref">
     <div class="buttons">
   <span class="button">Phone</span>
   <span class="button">Text</span>
@@ -122,7 +122,7 @@
   </div>
   <div class="field-body">
     <div class="field is-narrow">
-      <div class="control">
+      <div class="control" v-model="clientEnglish">
         <label class="radio">
           <input type="radio" name="member">
           Yes
@@ -146,7 +146,7 @@
   </div>
   <div class="field-body">
     <div class="field">
-      <div class="control">
+      <div class="control" v-model="clientClimbStairs">
         <label class="radio">
           <input type="radio" name="member">
           Yes
@@ -179,7 +179,7 @@
     <div class="field">
   <label class="label"># adults (18+) living in home</label>
   <div class="control">
-    <input class="input" type="text" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="clientCountAdults" placeholder="autofill frm prior submissions">
   </div>
 </div>
     </article>
@@ -188,7 +188,7 @@
     <div class="field">
   <label class="label"># children (17 and under) living in home</label>
   <div class="control">
-    <input class="input" type="text" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="clientCountChildren" placeholder="autofill frm prior submissions">
   </div>
 </div>
     </article>
@@ -209,7 +209,7 @@
   </div>
   <div class="field-body">
     <div class="field is-narrow">
-      <div class="control">
+      <div class="control" v-model="clientTranspo">
         <label class="radio">
           <input type="radio" name="member">
           Referring Agency has arranged professional movers
@@ -232,7 +232,7 @@
   </div>
   <div class="field-body">
     <div class="field is-narrow">
-      <div class="control">
+      <div class="control" v-model="clientTravelMode">
         <label class="radio">
           <input type="radio" name="member">
           train
@@ -274,7 +274,7 @@
     <article class="tile is-child box">
       <div class="field">
   <label class="label">Large Items</label >
-  <div class="control">
+  <div class="control" v-model="clientNeedItemsLarge">
     <div class="buttons">
   <span class="button">Couch</span>
   <span class="button">Upholstered Chair</span>
@@ -297,7 +297,7 @@
       <div class="field">
   <label class="label">Small Appliances (list)</label>
   <div class="control">
-    <input class="input" type="text" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="clientNeedItemsSmall" placeholder="">
   </div>
 </div>
 </article>
@@ -306,7 +306,7 @@ clear
       <div class="field">
   <label class="label">Kitchen Items (list)</label>
   <div class="control">
-    <input class="input" type="text" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="clientNeedItemsKitchen" placeholder="autofill frm prior submissions">
   </div>
 </div>
 </article>
