@@ -16,7 +16,7 @@
   icon:<div class="mdi mdi-account"></div>
   </article> -->
 
- <form @submit="testAppointment(referringAgencyName)">
+ <form @submit="testAppointment(referringAgencyName,referringAgencyAddress,referringAgencyContactName,referringAgencyContactTitle,referringAgencyContactPhone,clientName,clientAddressStreet,clientPhone,clientEmail,clientCommunicatePref,clientEnglish,clientClimbStairs,clientCountAdults,clientCountChildren,clientTranspo,clientTravelMode,clientNeedItemsLarge,clientNeedItemsSmall,clientNeedItemsKitchen)">
   <div class="tile is-ancestor">
   <div class="tile is-6 is-parent">
     <div class="tile is-child box">
@@ -104,11 +104,11 @@
     <article class="tile is-child box">
     <div class="field has-text-centered">
   <label class="label">What's the best way to communicate with the client?</label>
-  <div class="control" v-model="clientCommunicatePref">
+  <div class="control">
     <div class="buttons">
-  <span class="button">Phone</span>
-  <span class="button">Text</span>
-  <span class="button is-black">Email</span>
+  <span class="button" v-model="clientCommunicatePref">Phone</span>
+  <span class="button" v-model="clientCommunicatePref">Text</span>
+  <span class="button is-black" v-model="clientCommunicatePref">Email</span>
 </div>
   </div>
 </div>
@@ -122,13 +122,13 @@
   </div>
   <div class="field-body">
     <div class="field is-narrow">
-      <div class="control" v-model="clientEnglish">
+      <div class="control">
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientEnglish" name="member">
           Yes
         </label>
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientEnglish" name="member">
           No
         </label>
       </div>
@@ -146,13 +146,13 @@
   </div>
   <div class="field-body">
     <div class="field">
-      <div class="control" v-model="clientClimbStairs">
+      <div class="control">
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientClimbStairs" name="member">
           Yes
         </label>
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientClimbStairs" name="member">
           No
         </label>
       </div>
@@ -209,13 +209,13 @@
   </div>
   <div class="field-body">
     <div class="field is-narrow">
-      <div class="control" v-model="clientTranspo">
+      <div class="control">
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientTranspo" name="member">
           Referring Agency has arranged professional movers
         </label>
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientTranspo" name="member">
           Client will bring box truck (rental or other) and moving helper***
         </label>
       </div>
@@ -232,17 +232,17 @@
   </div>
   <div class="field-body">
     <div class="field is-narrow">
-      <div class="control" v-model="clientTravelMode">
+      <div class="control">
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientTravelMode" name="member">
           train
         </label>
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientTravelMode" name="member">
           bus
         </label>
         <label class="radio">
-          <input type="radio" name="member">
+          <input type="radio" v-model="clientTravelMode" name="member">
           car
         </label>
         <label class="radio">
@@ -274,20 +274,20 @@
     <article class="tile is-child box">
       <div class="field">
   <label class="label">Large Items</label >
-  <div class="control" v-model="clientNeedItemsLarge">
+  <div class="control">
     <div class="buttons">
-  <span class="button">Couch</span>
-  <span class="button">Upholstered Chair</span>
-  <span class="button">Coffee Table</span>
-  <span class="button">End Table</span>
-  <span class="button">Area Rug</span>
-  <span class="button">Desk</span>
-  <span class="button">Kitchen Table</span>
-  <span class="button">Chairs</span>
-  <span class="button">Chest of Drawers/Bureau</span>
-  <span class="button">Nightstand</span>
-  <span class="button">Bookcase</span>
-  <span class="button">Bedding/Towels</span>
+  <button class="button" v-model="clientNeedItemsLarge">Couch</button>
+  <button class="button" v-model="clientNeedItemsLarge">Upholstered Chair</button>
+  <button class="button" v-model="clientNeedItemsLarge">Coffee Table</button>
+  <button class="button" v-model="clientNeedItemsLarge">End Table</button>
+  <button class="button" v-model="clientNeedItemsLarge">Area Rug</button>
+  <button class="button" v-model="clientNeedItemsLarge">Desk</button>
+  <button class="button" v-model="clientNeedItemsLarge">Kitchen Table</button>
+  <button class="button" v-model="clientNeedItemsLarge">Chairs</button>
+  <button class="button" v-model="clientNeedItemsLarge">Chest of Drawers/Bureau</button>
+  <button class="button" v-model="clientNeedItemsLarge">Nightstand</button>
+  <button class="button" v-model="clientNeedItemsLarge">Bookcase</button>
+  <button class="button" v-model="clientNeedItemsLarge">Bedding/Towels</button>
 </div>
   </div>
 </div>
