@@ -339,7 +339,25 @@ export default {
       appointments: [],
       name: '',
       image: '',
-      referringAgencyName: ''
+      referringAgencyName: 'referringAgencyName',
+referringAgencyAddress: 'referringAgencyAddress',
+referringAgencyContactName: 'referringAgencyContactName',
+referringAgencyContactTitle: 'referringAgencyContactTitle',
+referringAgencyContactPhone: 'referringAgencyContactPhone',
+clientName: 'clientName',
+clientAddressStreet: 'clientAddressStreet',
+clientPhone: 'clientPhone',
+clientEmail: 'clientEmail',
+clientCommunicatePref: 'email',
+clientEnglish: 'clientEnglish',
+clientClimbStairs: 'clientClimbStairs',
+clientCountAdults: 'clientCountAdults',
+clientCountChildren: 'clientCountChildren',
+clientTranspo: 'clientTranspo',
+clientTravelMode: 'clientTravelMode',
+clientNeedItemsLarge: 'clientNeedItemsLarge',
+clientNeedItemsSmall: 'clientNeedItemsSmall',
+clientNeedItemsKitchen: 'clientNeedItemsKitchen'
     }
   },
   firestore () {
