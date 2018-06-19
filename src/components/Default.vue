@@ -106,9 +106,13 @@
   <label class="label">What's the best way to communicate with the client?</label>
   <div class="control">
     <div class="buttons">
-  <span class="button" v-model="clientCommunicatePref">Phone</span>
-  <span class="button" v-model="clientCommunicatePref">Text</span>
-  <span class="button is-black" v-model="clientCommunicatePref">Email</span>
+  <button class="button" v-on:click="swap" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
+  <button class="button" v-on:click="swap" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
+  <button class="button" v-on:click="swap" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
+  <h1 v-if="clientCommunicatePref == 'email'">Yes</h1>
+  <h1 v-else>not email</h1>
+  <p>===</p>
+  <div>current:{{ clientCommunicatePref }}</div>
 </div>
   </div>
 </div>
@@ -375,8 +379,17 @@ clientNeedItemsKitchen: 'clientNeedItemsKitchen'
     },
     testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
+    },
+    swap (event) {
+      // `this` inside methods points to the Vue instance
+      console.log(event);
+      this.clientCommunicatePref='phone'
+      
     }
-  }
+  },
+  computed: {
+
+}//computed
 }
 </script>
 
