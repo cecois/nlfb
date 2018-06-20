@@ -6,7 +6,6 @@
     <input v-model="image" placeholder="Image URL">
     <button type="submit">Add New</button>
 </form>
-
   <article v-for="(appointment, idx) in appointments" :key="idx">
     <img width="300px" :src="appointment.image">
     <h1>{{ appointment.name }}</h1>
@@ -14,8 +13,8 @@
     Delete
   </button>
   icon:<div class="mdi mdi-account"></div>
-  </article> -->
-
+  </article>
+-->
  <form @submit="testAppointment(referringAgencyName,referringAgencyAddress,referringAgencyContactName,referringAgencyContactTitle,referringAgencyContactPhone,clientName,clientAddressStreet,clientPhone,clientEmail,clientCommunicatePref,clientEnglish,clientClimbStairs,clientCountAdults,clientCountChildren,clientTranspo,clientTravelMode,clientNeedItemsLarge,clientNeedItemsSmall,clientNeedItemsKitchen)">
   <div class="tile is-ancestor">
   <div class="tile is-6 is-parent">
@@ -106,13 +105,11 @@
   <label class="label">What's the best way to communicate with the client?</label>
   <div class="control">
     <div class="buttons">
-  <button class="button" v-on:click="swap" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
-  <button class="button" v-on:click="swap" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
-  <button class="button" v-on:click="swap" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
-  <h1 v-if="clientCommunicatePref == 'email'">Yes</h1>
-  <h1 v-else>not email</h1>
-  <p>===</p>
-  <div>current:{{ clientCommunicatePref }}</div>
+  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
+  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
+  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
+  <!-- <h1 v-if="clientCommunicatePref == 'email'">Yes</h1> -->
+  <!-- <h1 v-else>not email</h1> -->
 </div>
   </div>
 </div>
@@ -127,18 +124,12 @@
   <div class="field-body">
     <div class="field is-narrow">
       <div class="control">
-        <label class="radio">
-          <input type="radio" v-model="clientEnglish" name="member">
-          Yes
-        </label>
-        <label class="radio">
-          <input type="radio" v-model="clientEnglish" name="member">
-          No
-        </label>
+        <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=true>Yes</label>
+        <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=false>No</label>
       </div>
     </div>
   </div>
-  <em>(If the response is "no", the client must bring an English speaking person to the warehouse to translate.)</em>
+  <em v-if="clientEnglish=='false'">(You selected "no" - the client must bring an English speaking person to the warehouse to translate.)</em>
 </div>
     </article>
   </div>
@@ -151,14 +142,8 @@
   <div class="field-body">
     <div class="field">
       <div class="control">
-        <label class="radio">
-          <input type="radio" v-model="clientClimbStairs" name="member">
-          Yes
-        </label>
-        <label class="radio">
-          <input type="radio" v-model="clientClimbStairs" name="member">
-          No
-        </label>
+        <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value=true>Yes</label>
+        <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value=false>No</label>
       </div>
     </div>
   </div>
@@ -182,19 +167,28 @@
     <article class="tile is-child box">
     <div class="field">
   <label class="label"># adults (18+) living in home</label>
-  <div class="control">
+  <div class="control has-icons-right">
     <input class="input" type="text" v-model="clientCountAdults" placeholder="autofill frm prior submissions">
+    <span class="icon is-small is-right">
+      <i class="mdi" v-bind:class="{'mdi-alert':isNaN(clientCountAdults)==true}"></i>
+    </span>
+
   </div>
 </div>
+<em v-if="isNaN(clientCountAdults)==true">this needs to be a number</em>
     </article>
     <!-- ******************************************************************* -->
     <article class="tile is-child box">
     <div class="field">
   <label class="label"># children (17 and under) living in home</label>
-  <div class="control">
+  <div class="control has-icons-right">
     <input class="input" type="text" v-model="clientCountChildren" placeholder="autofill frm prior submissions">
+    <span class="icon is-small is-right">
+      <i class="mdi" v-bind:class="{'mdi-alert':isNaN(clientCountChildren)==true}"></i>
+    </span>
   </div>
 </div>
+<em v-if="isNaN(clientCountChildren)==true">this needs to be a number</em>
     </article>
   </div><!-- /.tile.is-parent -->
 </div><!-- /.tile.is-ancestor -->
@@ -353,10 +347,10 @@ clientAddressStreet: 'clientAddressStreet',
 clientPhone: 'clientPhone',
 clientEmail: 'clientEmail',
 clientCommunicatePref: 'email',
-clientEnglish: 'clientEnglish',
-clientClimbStairs: 'clientClimbStairs',
-clientCountAdults: 'clientCountAdults',
-clientCountChildren: 'clientCountChildren',
+clientEnglish: "true",
+clientClimbStairs: 'true',
+clientCountAdults: 0,
+clientCountChildren: 0,
 clientTranspo: 'clientTranspo',
 clientTravelMode: 'clientTravelMode',
 clientNeedItemsLarge: 'clientNeedItemsLarge',
@@ -380,11 +374,13 @@ clientNeedItemsKitchen: 'clientNeedItemsKitchen'
     testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
     },
-    swap (event) {
+    swap (which,event) {
+      console.log(this)
       // `this` inside methods points to the Vue instance
-      console.log(event);
-      this.clientCommunicatePref='phone'
-      
+      let nv = event.target.innerHTML.toLowerCase()
+      this[which]=nv
+      //temp2['clientPhone']="1800"
+
     }
   },
   computed: {
