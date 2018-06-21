@@ -105,9 +105,9 @@
   <label class="label">What's the best way to communicate with the client?</label>
   <div class="control">
     <div class="buttons">
-  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
-  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
-  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
+  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" value="phone" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
+  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" value="text" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
+  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" value="email" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
   <!-- <h1 v-if="clientCommunicatePref == 'email'">Yes</h1> -->
   <!-- <h1 v-else>not email</h1> -->
 </div>
@@ -124,12 +124,14 @@
   <div class="field-body">
     <div class="field is-narrow">
       <div class="control">
-        <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=true>Yes</label>
-        <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=false>No</label>
+        <!-- <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=true>Yes</label>
+        <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=false>No</label> -->
+        <button class="button" v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="yes" v-bind:class="{'is-black':(clientEnglish === 'yes')}">Yes</button>
+  <button class="button" v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="no" v-bind:class="{'is-black':(clientEnglish === 'no')}">No</button>
       </div>
     </div>
   </div>
-  <em v-if="clientEnglish=='false'">(You selected "no" - the client must bring an English speaking person to the warehouse to translate.)</em>
+  <em v-if="clientEnglish=='no'">(You selected "no" - the client must bring an English speaking person to the warehouse to translate.)</em>
 </div>
     </article>
   </div>
@@ -142,8 +144,10 @@
   <div class="field-body">
     <div class="field">
       <div class="control">
-        <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value=true>Yes</label>
-        <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value=false>No</label>
+        <!-- <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="yes">Yes</label>
+        <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="no">No</label> -->
+        <button class="button" v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="yes" v-bind:class="{'is-black':(clientClimbStairs === 'yes')}">Yes</button>
+  <button class="button" v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="no" v-bind:class="{'is-black':(clientClimbStairs === 'no')}">No</button>
       </div>
     </div>
   </div>
@@ -170,7 +174,7 @@
   <div class="control has-icons-right">
     <input class="input" type="text" v-model="clientCountAdults" placeholder="autofill frm prior submissions">
     <span class="icon is-small is-right">
-      <i class="mdi" v-bind:class="{'mdi-alert':isNaN(clientCountAdults)==true}"></i>
+      <i class="mdi" v-bind:class="{'has-text-success':clientCountAdults>0,'mdi-check':isNaN(clientCountAdults)==false,'mdi-alert':isNaN(clientCountAdults)==true||clientCountAdults=='','has-text-danger':isNaN(clientCountAdults)==true,'has-text-warning':clientCountAdults==''}"></i>
     </span>
 
   </div>
@@ -183,8 +187,11 @@
   <label class="label"># children (17 and under) living in home</label>
   <div class="control has-icons-right">
     <input class="input" type="text" v-model="clientCountChildren" placeholder="autofill frm prior submissions">
-    <span class="icon is-small is-right">
+<!--     <span class="icon is-small is-right">
       <i class="mdi" v-bind:class="{'mdi-alert':isNaN(clientCountChildren)==true}"></i>
+    </span> -->
+        <span class="icon is-small is-right">
+      <i class="mdi" v-bind:class="{'has-text-success':clientCountAdults>0,'mdi-check':isNaN(clientCountAdults)==false,'mdi-alert':isNaN(clientCountChildren)==true||clientCountChildren=='','has-text-danger':isNaN(clientCountChildren)==true,'has-text-warning':clientCountChildren==''}"></i>
     </span>
   </div>
 </div>
@@ -347,8 +354,8 @@ clientAddressStreet: 'clientAddressStreet',
 clientPhone: 'clientPhone',
 clientEmail: 'clientEmail',
 clientCommunicatePref: 'email',
-clientEnglish: "true",
-clientClimbStairs: 'true',
+clientEnglish: "yes",
+clientClimbStairs: 'yes',
 clientCountAdults: 0,
 clientCountChildren: 0,
 clientTranspo: 'clientTranspo',
@@ -375,9 +382,10 @@ clientNeedItemsKitchen: 'clientNeedItemsKitchen'
       console.log(referringAgencyName)
     },
     swap (which,event) {
-      console.log(this)
+      event.preventDefault()
+      // console.log(this)
       // `this` inside methods points to the Vue instance
-      let nv = event.target.innerHTML.toLowerCase()
+      let nv = event.target.value.toLowerCase()
       this[which]=nv
       //temp2['clientPhone']="1800"
 
