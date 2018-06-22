@@ -172,7 +172,7 @@
     <div class="field">
   <label class="label"># adults (18+) living in home</label>
   <div class="control has-icons-right">
-    <input class="input" type="text" v-model="clientCountAdults" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="clientCountAdults" placeholder="">
     <span class="icon is-small is-right">
       <i class="mdi" v-bind:class="{'has-text-success':clientCountAdults>0,'mdi-check':isNaN(clientCountAdults)==false,'mdi-alert':isNaN(clientCountAdults)==true||clientCountAdults=='','has-text-danger':isNaN(clientCountAdults)==true,'has-text-warning':clientCountAdults==''}"></i>
     </span>
@@ -186,7 +186,7 @@
     <div class="field">
   <label class="label"># children (17 and under) living in home</label>
   <div class="control has-icons-right">
-    <input class="input" type="text" v-model="clientCountChildren" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="clientCountChildren" placeholder="">
 <!--     <span class="icon is-small is-right">
       <i class="mdi" v-bind:class="{'mdi-alert':isNaN(clientCountChildren)==true}"></i>
     </span> -->
