@@ -151,7 +151,6 @@
       </div>
     </div>
   </div>
-  <em>(Freight elevator available if necessary.)</em>
 </div>
     </article>
   </div>
