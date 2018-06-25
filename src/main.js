@@ -10,10 +10,15 @@ import 'firebase/firestore'
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
 
+import underscore from 'vue-underscore';
+import {_} from 'vue-underscore';
+
 import App from './App'
 import router from './router'
 
 Vue.config.productionTip = false
+
+Vue.use(underscore);
 Vue.use(Buefy)
 
 Vue.use(VueFire)

@@ -215,12 +215,10 @@
     <div class="field is-narrow">
       <div class="control">
         <label class="radio">
-          <input type="radio" v-model="clientTranspo" name="member">
-          Referring Agency has arranged professional movers
-        </label>
+          <input type="radio" value="professional" v-model="clientTranspo" name="bt-radio-transpo"></input>Referring Agency has arranged professional movers</label>
         <label class="radio">
-          <input type="radio" v-model="clientTranspo" name="member">
-          Client will bring box truck (rental or other) and moving helper***
+          <input type="radio" value="self" v-model="clientTranspo" name="bt-radio-transpo" checked></input>
+          Client will bring box truck (rental or other) and moving helper
         </label>
       </div>
     </div>
@@ -229,28 +227,28 @@
 </div>
     </article>
 <!-- ******************************************************************* -->
-    <article class="tile is-child box">
+    <article class="tile is-child box" v-if="clientTranspo == 'professional'">
 <div class="field">
   <div class="field-label">
-    <label class="has-text-left label">If professional movers, please indicate here if client will travel to warehouse to meet moving van by</label>
+    <label class="has-text-left label">Professional movers. Please select how the client will travel to warehouse to meet moving van.</label>
   </div>
   <div class="field-body">
     <div class="field is-narrow">
       <div class="control">
         <label class="radio">
-          <input type="radio" v-model="clientTravelMode" name="member">
+          <input value="train" type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
           train
         </label>
         <label class="radio">
-          <input type="radio" v-model="clientTravelMode" name="member">
+          <input value="bus" type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
           bus
         </label>
         <label class="radio">
-          <input type="radio" v-model="clientTravelMode" name="member">
+          <input value="car" checked type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
           car
         </label>
         <label class="radio">
-          <input type="radio" name="member">
+          <input value="van" type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
           moving van
         </label>
       </div>
@@ -280,18 +278,18 @@
   <label class="label">Large Items</label >
   <div class="control">
     <div class="buttons">
-  <button class="button" v-model="clientNeedItemsLarge">Couch</button>
-  <button class="button" v-model="clientNeedItemsLarge">Upholstered Chair</button>
-  <button class="button" v-model="clientNeedItemsLarge">Coffee Table</button>
-  <button class="button" v-model="clientNeedItemsLarge">End Table</button>
-  <button class="button" v-model="clientNeedItemsLarge">Area Rug</button>
-  <button class="button" v-model="clientNeedItemsLarge">Desk</button>
-  <button class="button" v-model="clientNeedItemsLarge">Kitchen Table</button>
-  <button class="button" v-model="clientNeedItemsLarge">Chairs</button>
-  <button class="button" v-model="clientNeedItemsLarge">Chest of Drawers/Bureau</button>
-  <button class="button" v-model="clientNeedItemsLarge">Nightstand</button>
-  <button class="button" v-model="clientNeedItemsLarge">Bookcase</button>
-  <button class="button" v-model="clientNeedItemsLarge">Bedding/Towels</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Couch</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Upholstered Chair</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Coffee Table</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">End Table</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Area Rug</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Desk</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Kitchen Table</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Chairs</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Chest of Drawers/Bureau</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Nightstand</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Bookcase</button>
+  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Bedding/Towels</button>
 </div>
   </div>
 </div>
@@ -305,12 +303,11 @@
   </div>
 </div>
 </article>
-clear
     <article class="tile is-child box">
       <div class="field">
   <label class="label">Kitchen Items (list)</label>
   <div class="control">
-    <input class="input" type="text" v-model="clientNeedItemsKitchen" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="clientNeedItemsKitchen" placeholder="">
   </div>
 </div>
 </article>
@@ -357,9 +354,9 @@ clientEnglish: "yes",
 clientClimbStairs: 'yes',
 clientCountAdults: 0,
 clientCountChildren: 0,
-clientTranspo: 'clientTranspo',
-clientTravelMode: 'clientTravelMode',
-clientNeedItemsLarge: 'clientNeedItemsLarge',
+clientTranspo: 'self',
+clientTravelMode: 'car',
+clientNeedItemsLarge: [],
 clientNeedItemsSmall: 'clientNeedItemsSmall',
 clientNeedItemsKitchen: 'clientNeedItemsKitchen'
     }
@@ -380,7 +377,21 @@ clientNeedItemsKitchen: 'clientNeedItemsKitchen'
     testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
     },
-    swap (which,event) {
+    addToArray (which,event){
+
+event.preventDefault()
+      // console.log(this)
+      // `this` inside methods points to the Vue instance
+      let nv = event.target.value.toLowerCase()
+
+      console.log("in it?",this[which].includes(nv));
+      console.log("in it?",this.$_.contains(this[which],nv));
+
+
+
+
+    }
+    ,swap (which,event) {
       event.preventDefault()
       // console.log(this)
       // `this` inside methods points to the Vue instance
