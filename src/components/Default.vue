@@ -105,9 +105,9 @@
   <label class="label">What's the best way to communicate with the client?</label>
   <div class="control">
     <div class="buttons">
-  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" value="phone" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
-  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" value="text" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
-  <button class="button" v-on:click="swap('clientCommunicatePref',$event)" value="email" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('clientCommunicatePref',$event)" value="phone" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('clientCommunicatePref',$event)" value="text" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('clientCommunicatePref',$event)" value="email" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
   <!-- <h1 v-if="clientCommunicatePref == 'email'">Yes</h1> -->
   <!-- <h1 v-else>not email</h1> -->
 </div>
@@ -235,22 +235,13 @@
   <div class="field-body">
     <div class="field is-narrow">
       <div class="control">
-        <label class="radio">
-          <input value="train" type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
-          train
-        </label>
-        <label class="radio">
-          <input value="bus" type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
-          bus
-        </label>
-        <label class="radio">
-          <input value="car" checked type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
-          car
-        </label>
-        <label class="radio">
-          <input value="van" type="radio" v-model="clientTravelMode" name="bt-radio-travel"></input>
-          moving van
-        </label>
+
+<label class="radio" v-for="item in clientTravelMode">
+<input type="radio" name="bt-radio-travelMode" :checked="item.status" @click="changeStatusRadio('clientTravelMode',item.key)">
+{{item.label}}
+</input>
+</label>
+
       </div>
     </div>
   </div>
@@ -278,18 +269,9 @@
   <label class="label">Large Items</label >
   <div class="control">
     <div class="buttons">
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Couch</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Upholstered Chair</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Coffee Table</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">End Table</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Area Rug</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Desk</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Kitchen Table</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Chairs</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Chest of Drawers/Bureau</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Nightstand</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Bookcase</button>
-  <button class="button" @click="addToArray('clientNeedItemsLarge',$event)" v-model="clientNeedItemsLarge">Bedding/Towels</button>
+
+<button v-on:click.self.prevent v-for="item in clientNeedItemsLarge" @click="item.status=!item.status" class="button" v-bind:class="{ 'is-black':item.status }">{{item.label}}</button>
+
 </div>
   </div>
 </div>
@@ -297,17 +279,17 @@
 
     <article class="tile is-child box">
       <div class="field">
-  <label class="label">Small Appliances (list)</label>
+  <label class="label">Small Appliances (comma-delimited)</label>
   <div class="control">
-    <input class="input" type="text" v-model="clientNeedItemsSmall" placeholder="">
+    <input class="input" type="text" v-model="clientNeedItemsSmall" v-on:keyup="prepArray('clientNeedItemsSmall',$event)">
   </div>
 </div>
 </article>
     <article class="tile is-child box">
       <div class="field">
-  <label class="label">Kitchen Items (list)</label>
+  <label class="label">Kitchen Items (comma-delimited)</label>
   <div class="control">
-    <input class="input" type="text" v-model="clientNeedItemsKitchen" placeholder="">
+    <input class="input" type="text" v-model="clientNeedItemsKitchen" v-on:keyup="prepArray('clientNeedItemsKitchen',$event)">
   </div>
 </div>
 </article>
@@ -354,11 +336,30 @@ clientEnglish: "yes",
 clientClimbStairs: 'yes',
 clientCountAdults: 0,
 clientCountChildren: 0,
-clientTranspo: 'self',
-clientTravelMode: 'car',
-clientNeedItemsLarge: [],
-clientNeedItemsSmall: 'clientNeedItemsSmall',
-clientNeedItemsKitchen: 'clientNeedItemsKitchen'
+clientTranspo: 'professional',
+clientTravelMode: [
+{key:'train',status:false,label:"Train"}
+,{key:'bus',status:false,label:"Bus"}
+,{key:'car',status:false,label:"Car"}
+,{key:'movingvan',status:true,label:"Moving Van"}
+],
+clientNeedItemsLarge: [
+{"key":"couch",status:true,"label":"Couch"}
+,{"key":"table_kitchen",status:false,"label":"Kitchen Table"}
+,{status:false,label:"Area Rug",key:"arearug"}
+,{status:false,label:"Bedding/Towels",key:"bedding_y_towels"}
+,{status:false,label:"Bookcase",key:"bookcase"}
+,{status:false,label:"Chairs",key:"chairs"}
+,{status:false,label:"Chest of Drawers/Bureau",key:"bureau"}
+,{status:false,label:"Coffee Table",key:"coffeetable"}
+,{status:false,label:"Desk",key:"desk"}
+,{status:false,label:"End Table",key:"endtable"}
+,{status:false,label:"Kitchen Table",key:"kitchentable"}
+,{status:false,label:"Nightstand",key:"nightstand"}
+,{status:false,label:"Upholstered Chair",key:"upholsteredchair"}
+],
+clientNeedItemsSmall: [],
+clientNeedItemsKitchen: []
     }
   },
   firestore () {
@@ -373,32 +374,23 @@ clientNeedItemsKitchen: 'clientNeedItemsKitchen'
     },
     deleteAppointment (id) {
       db.collection('appointments').doc(id).delete()
-    },
-    testAppointment (referringAgencyName) {
+    }
+    ,changeStatusRadio (which,truth){
+      this.$_.each(this[which],(k)=>{
+        console.log("k",k);
+        k.status = (k.key!==truth)?false:true;
+      })
+    }
+    ,prepArray (which,event) {
+      // console.log(event.target.value.toLowerCase())
+      this[which]=event.target.value.split(",")
+    }
+    ,testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
-    },
-    addToArray (which,event){
-
-event.preventDefault()
-      // console.log(this)
-      // `this` inside methods points to the Vue instance
-      let nv = event.target.value.toLowerCase()
-
-      console.log("in it?",this[which].includes(nv));
-      console.log("in it?",this.$_.contains(this[which],nv));
-
-
-
-
     }
     ,swap (which,event) {
-      event.preventDefault()
-      // console.log(this)
-      // `this` inside methods points to the Vue instance
       let nv = event.target.value.toLowerCase()
       this[which]=nv
-      //temp2['clientPhone']="1800"
-
     }
   },
   computed: {
