@@ -32,7 +32,7 @@
 <div class="field">
   <label class="label">Agency Address</label>
   <div class="control">
-    <input class="input" type="text" v-model="referringAgencyAddress" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="referringAgencyAddress" placeholder="" v-on:keyup="validateAddressStreet($event)">
   </div>
 </div>
 <!-- ******************************************************************* -->
@@ -322,8 +322,8 @@ export default {
       appointments: [],
       name: '',
       image: '',
-      referringAgencyName: 'referringAgencyName',
-referringAgencyAddress: 'referringAgencyAddress',
+      referringAgencyName: '',
+referringAgencyAddress: '',
 referringAgencyContactName: 'referringAgencyContactName',
 referringAgencyContactTitle: 'referringAgencyContactTitle',
 referringAgencyContactPhone: 'referringAgencyContactPhone',
@@ -387,6 +387,9 @@ clientNeedItemsKitchen: []
     }
     ,testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
+    }
+    ,validateAddressStreet (event) {
+      
     }
     ,swap (which,event) {
       let nv = event.target.value.toLowerCase()
