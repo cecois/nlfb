@@ -12,6 +12,7 @@ import 'buefy/lib/buefy.css'
 
 import underscore from 'vue-underscore';
 import {_} from 'vue-underscore';
+import moment from 'moment';
 
 import App from './App'
 import router from './router'
@@ -20,8 +21,10 @@ Vue.config.productionTip = false
 
 Vue.use(underscore);
 Vue.use(Buefy)
-
 Vue.use(VueFire)
+
+Object.defineProperty(Vue.prototype, '$MOMENT', { value: moment });
+
 firebase.initializeApp({
   projectId: 'nlfbma',
   databaseURL: 'https://nlfbma.firebaseio.com'

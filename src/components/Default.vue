@@ -32,7 +32,8 @@
 <div class="field">
   <label class="label">Agency Address</label>
   <div class="control">
-    <input class="input" type="text" v-model="referringAgencyAddress" placeholder="" v-on:keyup="validateAddressStreet($event)">
+    <input class="input" type="text" v-model="referringAgencyAddress" placeholder="">
+    <div v-bind:class="{'is-hidden':(validaterex('referringAgencyAddress','address_street')==false),'has-text-red':(validaterex('referringAgencyAddress','address_street')==false)}"> don't look right</div>
   </div>
 </div>
 <!-- ******************************************************************* -->
@@ -388,8 +389,25 @@ clientNeedItemsKitchen: []
     ,testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
     }
-    ,validateAddressStreet (event) {
-      
+    ,validaterex (which,type) {
+
+let v = this[which];
+
+if(type=='address_street'){
+  let commas = this.$_.filter(v,(char)=>{
+    return char==","
+  })
+let re = null;
+switch (false) {
+  case commas.length<2:
+    re=false
+    break;
+  default:
+
+}
+return re;
+}//type=address_street
+
     }
     ,swap (which,event) {
       let nv = event.target.value.toLowerCase()
