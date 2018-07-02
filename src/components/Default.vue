@@ -31,9 +31,13 @@
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Address</label>
-  <div class="control">
+  <div class="control has-icons-right">
     <input class="input" type="text" v-model="referringAgencyAddress" placeholder="">
-    <div v-bind:class="{'is-hidden':(validaterex('referringAgencyAddress','address_street')==false),'has-text-red':(validaterex('referringAgencyAddress','address_street')==false)}"> don't look right</div>
+    <span class="icon is-small is-right">
+    <i class="mdi" v-bind:class="{'has-text-success':(validaterex('referringAgencyAddress','address_street').success==true),'mdi-check':(validaterex('referringAgencyAddress','address_street').success==true),'mdi-alert':(validaterex('referringAgencyAddress','address_street').success==false),'has-text-danger':(validaterex('referringAgencyAddress','address_street').success==false),'has-text-warning':(validaterex('referringAgencyAddress','address_street').success==false)}"></i>
+  </span>
+  </input>
+    <em v-bind:class="{'is-hidden':(validaterex('referringAgencyAddress','address_street').success==0)}">{{validaterex('referringAgencyAddress','address_street').reason}}</em>
   </div>
 </div>
 <!-- ******************************************************************* -->
@@ -366,6 +370,7 @@ clientNeedItemsKitchen: []
   firestore () {
     return {
       appointments: db.collection('appointments')
+      ,agencies:db.collection('agencies')
     }
   },
   methods: {
@@ -394,16 +399,22 @@ clientNeedItemsKitchen: []
 let v = this[which];
 
 if(type=='address_street'){
-  let commas = this.$_.filter(v,(char)=>{
-    return char==","
-  })
-let re = null;
-switch (false) {
-  case commas.length<2:
-    re=false
+let clauses = v.split(",")
+let re = {success:false,reason:"missing address components"};
+
+// 11 trenton pl, anton
+switch (true) {
+  case clauses.length<2 || clauses[1].length<4:
+    re.success=false;
+    re.reason="missing most pieces";
+    break;
+      case (isNaN(clauses[0][0]) && clauses[0].split(" ")<=4):
+    re.success=false;
+    re.reason="missing at least a leading house number and/or street name (or they are out of place)";
     break;
   default:
-
+  re.success=true;
+  re.reason="looks legit"
 }
 return re;
 }//type=address_street
