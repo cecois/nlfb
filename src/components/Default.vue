@@ -324,7 +324,6 @@ export default {
   name: 'Default',
   data () {
     return {
-      appointments: [],
       name: '',
       image: '',
       referringAgencyName: '',
@@ -376,10 +375,10 @@ clientNeedItemsKitchen: []
   methods: {
     addAppointment (name, image) {
       const createdAt = new Date()
-      db.collection('appointments').add({ name, image, createdAt })
+      // db.collection('appointments').add({ name, image, createdAt })
     },
     deleteAppointment (id) {
-      db.collection('appointments').doc(id).delete()
+      // db.collection('appointments').doc(id).delete()
     }
     ,changeStatusRadio (which,truth){
       this.$_.each(this[which],(k)=>{
@@ -393,6 +392,10 @@ clientNeedItemsKitchen: []
     }
     ,testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
+    }
+    ,listAgencies (){
+      // console.log(db.collection('agences'))
+      ;
     }
     ,validaterex (which,type) {
 

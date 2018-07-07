@@ -15,9 +15,9 @@
     "firebase": "^5.0.4",
     "moment": "^2.22.2",
     "vue": "^2.5.2",
+    "vue-firestore": "^0.2.9",
     "vue-router": "^3.0.1",
-    "vue-underscore": "^0.1.4",
-    "vuefire": "^2.0.0-alpha.11"
+    "vue-underscore": "^0.1.4"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

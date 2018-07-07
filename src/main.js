@@ -3,7 +3,8 @@
 import Vue from 'vue'
 
 // firebase stuff
-import VueFire from 'vuefire'
+// import VueFire from 'vuefire'
+import VUEFIRESTORE from 'vue-firestore'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 // bulma stuff via buefy
@@ -21,17 +22,24 @@ Vue.config.productionTip = false
 
 Vue.use(underscore);
 Vue.use(Buefy)
-Vue.use(VueFire)
+// Vue.use(VueFire)
+Vue.use(VUEFIRESTORE)
 
 Object.defineProperty(Vue.prototype, '$MOMENT', { value: moment });
 
-firebase.initializeApp({
+var firebaseApp = firebase.initializeApp({
   projectId: 'nlfbma',
   databaseURL: 'https://nlfbma.firebaseio.com'
 })
+
 export const db = firebase.firestore()
-const settings = {timestampsInSnapshots: true}
-db.settings(settings)
+// const settings = {timestampsInSnapshots: true}
+// db.settings(settings)
+const firestore = firebaseApp.firestore();
+ const settings = {
+ 	/* your settings... */
+ 	timestampsInSnapshots: true};
+  firestore.settings(settings);
 
 /* eslint-disable no-new */
 new Vue({
@@ -39,4 +47,13 @@ new Vue({
   router,
   components: { App },
   template: '<App/>'
+  // firestore() {
+  //   return {
+  //       // Collection
+  //       appointments: firestore.collection('appointments'),
+  //       agencies: firestore.collection('agencies')
+  //       // Doc
+  //       // ford: firestore.collection('cars').doc('ford')
+  //   }
+  // }
 })
