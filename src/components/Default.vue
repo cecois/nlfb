@@ -131,8 +131,8 @@
       <div class="control">
         <!-- <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=true>Yes</label>
         <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=false>No</label> -->
-        <button class="button" v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="yes" v-bind:class="{'is-black':(clientEnglish === 'yes')}">Yes</button>
-  <button class="button" v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="no" v-bind:class="{'is-black':(clientEnglish === 'no')}">No</button>
+        <button class="button" v-on:click.self.prevent v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="yes" v-bind:class="{'is-black':(clientEnglish === 'yes')}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="no" v-bind:class="{'is-black':(clientEnglish === 'no')}">No</button>
       </div>
     </div>
   </div>
@@ -151,8 +151,8 @@
       <div class="control">
         <!-- <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="yes">Yes</label>
         <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="no">No</label> -->
-        <button class="button" v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="yes" v-bind:class="{'is-black':(clientClimbStairs === 'yes')}">Yes</button>
-  <button class="button" v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="no" v-bind:class="{'is-black':(clientClimbStairs === 'no')}">No</button>
+        <button class="button" v-on:click.self.prevent v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="yes" v-bind:class="{'is-black':(clientClimbStairs === 'yes')}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="no" v-bind:class="{'is-black':(clientClimbStairs === 'no')}">No</button>
       </div>
     </div>
   </div>
@@ -312,6 +312,9 @@
 
 <button class="button is-large is-black" type="submit">Submit</button>
 </form>
+
+<v-autocomplete :items="['one','two','ten']" v-model="item" :get-label="getLabel" :component-item='template' @update-items="updateItems">
+  </v-autocomplete>
 
 </div>
 </template>

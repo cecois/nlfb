@@ -7,6 +7,8 @@ import Vue from 'vue'
 import VUEFIRESTORE from 'vue-firestore'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import Autocomplete from 'v-autocomplete'
+import 'v-autocomplete/dist/v-autocomplete.css'
 // bulma stuff via buefy
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
@@ -21,7 +23,8 @@ import router from './router'
 Vue.config.productionTip = false
 
 Vue.use(underscore);
-Vue.use(Buefy)
+Vue.use(Buefy);
+Vue.use(Autocomplete)
 // Vue.use(VueFire)
 Vue.use(VUEFIRESTORE)
 
