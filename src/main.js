@@ -7,8 +7,10 @@ import Vue from 'vue'
 import VUEFIRESTORE from 'vue-firestore'
 import firebase from 'firebase/app'
 import 'firebase/firestore'
-import Autocomplete from 'v-autocomplete'
-import 'v-autocomplete/dist/v-autocomplete.css'
+
+import VueSimpleSuggest from 'vue-simple-suggest'
+import 'vue-simple-suggest/dist/styles.css' // Optional CSS
+
 // bulma stuff via buefy
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
@@ -24,9 +26,10 @@ Vue.config.productionTip = false
 
 Vue.use(underscore);
 Vue.use(Buefy);
-Vue.use(Autocomplete)
+
 // Vue.use(VueFire)
 Vue.use(VUEFIRESTORE)
+Vue.component('vue-simple-suggest', VueSimpleSuggest)
 
 Object.defineProperty(Vue.prototype, '$MOMENT', { value: moment });
 
@@ -48,7 +51,7 @@ const firestore = firebaseApp.firestore();
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: { App, VueSimpleSuggest },
   template: '<App/>'
   // firestore() {
   //   return {

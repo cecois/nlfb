@@ -1,6 +1,5 @@
 <template>
 <div>
-
   <!-- <form @submit="addAppointment(name, image)">
     <input v-model="name" placeholder="Name">
     <input v-model="image" placeholder="Image URL">
@@ -25,7 +24,13 @@
 <div class="field">
   <label class="label">Agency Name</label>
   <div class="control">
-    <input class="input" type="text" v-model="referringAgencyName" placeholder="autofill frm prior submissions">
+    <!-- <input class="input" type="text" v-model="referringAgencyName" placeholder="autofill frm prior submissions"> -->
+    <vue-simple-suggest
+        v-model="agencyListChosen"
+        :list="simpleSuggestionList"
+        :filter-by-query="true">
+    <!-- Filter by input text to only show the matching results -->
+      </vue-simple-suggest>
   </div>
 </div>
 <!-- ******************************************************************* -->
@@ -313,9 +318,6 @@
 <button class="button is-large is-black" type="submit">Submit</button>
 </form>
 
-<v-autocomplete :items="['one','two','ten']" v-model="item" :get-label="getLabel" :component-item='template' @update-items="updateItems">
-  </v-autocomplete>
-
 </div>
 </template>
 
@@ -327,6 +329,7 @@ export default {
   name: 'Default',
   data () {
     return {
+      agencyListChosen:null,
       name: '',
       image: '',
       referringAgencyName: '',
@@ -376,6 +379,14 @@ clientNeedItemsKitchen: []
     }
   },
   methods: {
+    simpleSuggestionList() {
+      return this.agencies;
+        // return [
+        //   'Vue.js',
+        //   'React.js',
+        //   'Angular.js'
+        // ]
+      },
     addAppointment (name, image) {
       const createdAt = new Date()
       // db.collection('appointments').add({ name, image, createdAt })
