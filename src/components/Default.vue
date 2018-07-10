@@ -380,14 +380,17 @@ clientNeedItemsKitchen: []
     }
   },
   methods: {
-    simpleSuggestionList() {
+  test(){
+console.log(this.$_.pluck(this.agencies,'name'))
+},
+simpleSuggestionList() {
 
-      return agencies
-        // return [
-        //   'Tommy',
-        //   'John',
-        //   'Hot Dog'
-        // ]
+return this.$_.pluck(this.agencies,'name')
+        return [
+          'Tommy',
+          'John',
+          'Hot Dog'
+        ]
       },
     addAppointment (name, image) {
       const createdAt = new Date()
