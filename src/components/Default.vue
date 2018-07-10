@@ -1,5 +1,6 @@
 <template>
 <div>
+
   <!-- <form @submit="addAppointment(name, image)">
     <input v-model="name" placeholder="Name">
     <input v-model="image" placeholder="Image URL">
@@ -380,11 +381,12 @@ clientNeedItemsKitchen: []
   },
   methods: {
     simpleSuggestionList() {
-      return this.agencies;
+
+      return agencies
         // return [
-        //   'Vue.js',
-        //   'React.js',
-        //   'Angular.js'
+        //   'Tommy',
+        //   'John',
+        //   'Hot Dog'
         // ]
       },
     addAppointment (name, image) {
