@@ -28,8 +28,12 @@
     <!-- <input class="input" type="text" v-model="referringAgencyName" placeholder="autofill frm prior submissions"> -->
     <vue-simple-suggest
         v-model="agencyListChosen"
+        value-attribute="_id"
+  display-attribute="name"
         :list="simpleSuggestionList"
-        :filter-by-query="true">
+        :filter-by-query="true"
+        @hover="onSuggestSelect"
+          >
     <!-- Filter by input text to only show the matching results -->
       </vue-simple-suggest>
   </div>
@@ -334,7 +338,7 @@ export default {
       name: '',
       image: '',
       referringAgencyName: '',
-referringAgencyAddress: '',
+referringAgencyAddress: '1122 Boogie Woogie Av.',
 referringAgencyContactName: 'referringAgencyContactName',
 referringAgencyContactTitle: 'referringAgencyContactTitle',
 referringAgencyContactPhone: 'referringAgencyContactPhone',
@@ -384,7 +388,7 @@ clientNeedItemsKitchen: []
 console.log(this.$_.pluck(this.agencies,'name'))
 },
 simpleSuggestionList() {
-
+return this.agencies
 return this.$_.pluck(this.agencies,'name')
         return [
           'Tommy',
@@ -412,9 +416,9 @@ return this.$_.pluck(this.agencies,'name')
     ,testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
     }
-    ,listAgencies (){
-      // console.log(db.collection('agences'))
-      ;
+    ,onSuggestSelect (s){
+      var address_msg = (s.address=='')?"(no address on file - please type it here)":s.address
+      this.referringAgencyAddress = address_msg
     }
     ,validaterex (which,type) {
 
