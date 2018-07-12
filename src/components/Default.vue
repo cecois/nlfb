@@ -424,6 +424,7 @@ return this.$_.pluck(this.agencies,'name')
 
 let v = this[which];
 
+if(typeof v !== 'undefined'){
 if(type=='address_street'){
 let clauses = v.split(",")
 let re = {success:false,reason:"missing address components"};
@@ -444,7 +445,10 @@ switch (true) {
 }
 return re;
 }//type=address_street
-
+}//if v
+else {
+  return false;
+}
     }
     ,swap (which,event) {
       let nv = event.target.value.toLowerCase()
