@@ -42,33 +42,33 @@
 <div class="field">
   <label class="label">Agency Address</label>
   <div class="control has-icons-right">
-    <input class="input" type="text" v-model="referringAgencyAddress" placeholder="">
+    <input class="input" type="text" v-model="referringAgency.address" placeholder="">
     <span class="icon is-small is-right">
-    <i class="mdi" v-bind:class="{'has-text-success':(validaterex('referringAgencyAddress','address_street').success==true),'mdi-check':(validaterex('referringAgencyAddress','address_street').success==true),'mdi-alert':(validaterex('referringAgencyAddress','address_street').success==false),'has-text-danger':(validaterex('referringAgencyAddress','address_street').success==false),'has-text-warning':(validaterex('referringAgencyAddress','address_street').success==false)}"></i>
+    <i class="mdi" v-bind:class="{'has-text-success':(validaterex('referringAgency.address','address_street').success==true),'mdi-check':(validaterex('referringAgency.address','address_street').success==true),'mdi-alert':(validaterex('referringAgency.address','address_street').success==false),'has-text-danger':(validaterex('referringAgency.address','address_street').success==false),'has-text-warning':(validaterex('referringAgency.address','address_street').success==false)}"></i>
   </span>
   </input>
-    <em v-bind:class="{'is-hidden':(validaterex('referringAgencyAddress','address_street').success==0)}">{{validaterex('referringAgencyAddress','address_street').reason}}</em>
+    <em v-bind:class="{'is-hidden':(validaterex('referringAgency.address','address_street').success==0)}">{{validaterex('referringAgency.address','address_street').reason}}</em>
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Name</label>
   <div class="control">
-    <input class="input" type="text" v-model="referringAgencyContactName" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="referringAgency.advocate_name" placeholder="autofill frm prior submissions">
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Job Title</label>
   <div class="control">
-    <input class="input" type="text" v-model="referringAgencyContactTitle" placeholder="autofill frm prior submissionsa">
+    <input class="input" type="text" v-model="referringAgency.advocate_title" placeholder="autofill frm prior submissionsa">
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Phone Number(s)</label>
   <div class="control">
-    <input class="input" type="text" v-model="referringAgencyContactPhone" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
+    <input class="input" type="text" v-model="referringAgency.advocate_phone" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
   </div>
 </div>
     </div>
@@ -81,7 +81,7 @@
       <div class="field">
         <label class="label">Client: Full Name</label>
         <div class="control">
-          <input class="input" type="text" v-model="clientName" placeholder="">
+          <input class="input" type="text" v-model="client.name" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
@@ -120,9 +120,9 @@
   <label class="label">What's the best way to communicate with the client?</label>
   <div class="control">
     <div class="buttons">
-  <button class="button" v-on:click.self.prevent v-on:click="swap('clientCommunicatePref',$event)" value="phone" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'phone')}">Phone</button>
-  <button class="button" v-on:click.self.prevent v-on:click="swap('clientCommunicatePref',$event)" value="text" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'text')}">Text</button>
-  <button class="button" v-on:click.self.prevent v-on:click="swap('clientCommunicatePref',$event)" value="email" v-model="clientCommunicatePref" v-bind:class="{'is-black':(clientCommunicatePref === 'email')}">Email</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.communicatepref',$event)" value="phone" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'phone')}">Phone</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.communicatepref',$event)" value="text" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'text')}">Text</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.communicatepref',$event)" value="email" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'email')}">Email</button>
   <!-- <h1 v-if="clientCommunicatePref == 'email'">Yes</h1> -->
   <!-- <h1 v-else>not email</h1> -->
 </div>
@@ -141,12 +141,12 @@
       <div class="control">
         <!-- <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=true>Yes</label>
         <label class="radio"><input type="radio" v-model="clientEnglish" name="radio-english" value=false>No</label> -->
-        <button class="button" v-on:click.self.prevent v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="yes" v-bind:class="{'is-black':(clientEnglish === 'yes')}">Yes</button>
-  <button class="button" v-on:click.self.prevent v-on:click="swap('clientEnglish',$event)" v-model="clientEnglish" value="no" v-bind:class="{'is-black':(clientEnglish === 'no')}">No</button>
+        <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.english',$event)" v-model="appointment.english" value="yes" v-bind:class="{'is-black':(appointment.english === 'yes')}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.english',$event)" v-model="appointment.english" value="no" v-bind:class="{'is-black':(appointment.english === 'no')}">No</button>
       </div>
     </div>
   </div>
-  <em v-if="clientEnglish=='no'">(You selected "no" - the client must bring an English speaking person to the warehouse to translate.)</em>
+  <em v-if="appointment.english=='no'">(You selected "no" - the client must bring an English speaking person to the warehouse to translate.)</em>
 </div>
     </article>
   </div>
@@ -161,8 +161,8 @@
       <div class="control">
         <!-- <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="yes">Yes</label>
         <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="no">No</label> -->
-        <button class="button" v-on:click.self.prevent v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="yes" v-bind:class="{'is-black':(clientClimbStairs === 'yes')}">Yes</button>
-  <button class="button" v-on:click.self.prevent v-on:click="swap('clientClimbStairs',$event)" v-model="clientClimbStairs" value="no" v-bind:class="{'is-black':(clientClimbStairs === 'no')}">No</button>
+        <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.climbstairs',$event)" v-model="appointment.climbstairs" value="yes" v-bind:class="{'is-black':(appointment.climbstairs === 'yes')}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.climbstairs',$event)" v-model="appointment.climbstairs" value="no" v-bind:class="{'is-black':(appointment.climbstairs === 'no')}">No</button>
       </div>
     </div>
   </div>
@@ -186,14 +186,14 @@
     <div class="field">
   <label class="label"># adults (18+) living in home</label>
   <div class="control has-icons-right">
-    <input class="input" type="text" v-model="clientCountAdults" placeholder="">
+    <input class="input" type="text" v-model="appointment.countadults" placeholder="">
     <span class="icon is-small is-right">
-      <i class="mdi" v-bind:class="{'has-text-success':clientCountAdults>0,'mdi-check':isNaN(clientCountAdults)==false,'mdi-alert':isNaN(clientCountAdults)==true||clientCountAdults=='','has-text-danger':isNaN(clientCountAdults)==true,'has-text-warning':clientCountAdults==''}"></i>
+      <i class="mdi" v-bind:class="{'has-text-success':appointment.countadults>0,'mdi-check':isNaN(appointment.countadults)==false,'mdi-alert':isNaN(appointment.countadults)==true||appointment.countadults=='','has-text-danger':isNaN(appointment.countadults)==true,'has-text-warning':appointment.countadults==''}"></i>
     </span>
 
   </div>
 </div>
-<em v-if="isNaN(clientCountAdults)==true">this needs to be a number</em>
+<em v-if="isNaN(appointment.countadults)==true">this needs to be a number</em>
     </article>
     <!-- ******************************************************************* -->
     <article class="tile is-child box">
@@ -337,28 +337,43 @@ export default {
       agencyListChosen:null,
       name: '',
       image: '',
-      referringAgencyName: '',
-referringAgencyAddress: '1122 Boogie Woogie Av.',
-referringAgencyContactName: 'referringAgencyContactName',
-referringAgencyContactTitle: 'referringAgencyContactTitle',
-referringAgencyContactPhone: 'referringAgencyContactPhone',
-clientName: 'clientName',
-clientAddressStreet: 'clientAddressStreet',
-clientPhone: 'clientPhone',
-clientEmail: 'clientEmail',
-clientCommunicatePref: 'email',
-clientEnglish: "yes",
-clientClimbStairs: 'yes',
-clientCountAdults: 0,
-clientCountChildren: 0,
-clientTranspo: 'professional',
-clientTravelMode: [
+referringAgency:{
+  name: '',
+  address: '1122 Boogie Woogie Av.',
+  advocate_name: 'referringAgencyContactName',
+  advocate_title: 'referringAgencyContactTitle',
+  advocate_phone: 'referringAgencyContactPhone',
+},
+clients:{
+  [
+  {name_first: 'clientName',
+  name_middle: 'clientName',
+  name_last: 'clientName'},
+  {name_first: 'clientName',
+  name_middle: 'clientName',
+  name_last: 'clientName'}
+]
+},
+client_prim:{
+address_street: 'addressstreet',
+phone: 'phone',
+email: 'email'
+},
+appointment:
+{
+  communicatepref: 'email',
+  english: "yes",
+climbstairs: 'yes',
+countadults: 0,
+countchildren: 0,
+transpo: 'professional',
+clienttravelmode: [
 {key:'train',status:false,label:"Train"}
 ,{key:'bus',status:false,label:"Bus"}
 ,{key:'car',status:false,label:"Car"}
 ,{key:'movingvan',status:true,label:"Moving Van"}
 ],
-clientNeedItemsLarge: [
+needitemslarge: [
 {"key":"couch",status:true,"label":"Couch"}
 ,{"key":"table_kitchen",status:false,"label":"Kitchen Table"}
 ,{status:false,label:"Area Rug",key:"arearug"}
@@ -373,8 +388,10 @@ clientNeedItemsLarge: [
 ,{status:false,label:"Nightstand",key:"nightstand"}
 ,{status:false,label:"Upholstered Chair",key:"upholsteredchair"}
 ],
-clientNeedItemsSmall: [],
-clientNeedItemsKitchen: []
+needitemssmall: [],
+needitemskitchen: []
+}
+//appointment
     }
   },
   firestore () {
@@ -414,11 +431,11 @@ return this.$_.pluck(this.agencies,'name')
       this[which]=event.target.value.split(",")
     }
     ,testAppointment (referringAgencyName) {
-      console.log(referringAgencyName)
+      console.log(referringAgency.name)
     }
     ,onSuggestSelect (s){
       var address_msg = (s.address=='')?"(no address on file - please type it here)":s.address
-      this.referringAgencyAddress = address_msg
+      this.referringAgency.address = address_msg
     }
     ,validaterex (which,type) {
 
