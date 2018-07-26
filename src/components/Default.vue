@@ -76,33 +76,33 @@
 <!-- /.is-ancestor -->
   <div class="tile is-6 is-parent">
     <div class="tile is-child box">
-      <p class="title">Client</p>
+      <p class="title">Clients</p>
 <!-- ******************************************************************* -->
       <div class="field">
-        <label class="label">Client: Full Name</label>
+        <label class="label">(Primary) Client: Full Name</label>
         <div class="control">
-          <input class="input" type="text" v-model="client.name" placeholder="">
+          <input class="input" type="text" v-model="clients.primary.client_name_first" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
       <div class="field">
-        <label class="label">Client: Street Address</label>
+        <label class="label">(Primary) Client: Street Address</label>
         <div class="control">
-          <input class="input" type="text" v-model="client.addressstreet" placeholder="">
+          <input class="input" type="text" v-model="clients.primary.client_addressstreet" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
       <div class="field">
-        <label class="label">Client: Phone #</label>
+        <label class="label">(Primary) Client: Phone #</label>
         <div class="control">
-          <input class="input" type="text" v-model="client.phone" placeholder="">
+          <input class="input" type="text" v-model="clients.primary.client_phone" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
       <div class="field">
-        <label class="label">Client: email</label>
+        <label class="label">(Primary) Client: email</label>
         <div class="control">
-          <input class="input" type="text" v-model="client.email" placeholder="">
+          <input class="input" type="text" v-model="clients.primary.client_email" placeholder="">
         </div>
       </div>
 </div>
@@ -338,19 +338,28 @@ export default {
     "agencyListChosen": null
   },
   "agency": {
-    "name": "",
-    "address": "1122 Boogie Woogie Av.",
-    "contactname": "referringAgencyContactName",
-    "contacttitle": "referringAgencyContactTitle",
-    "contactphone": "referringAgencyContactPhone"
-  },
-  "client": {
-    "name": "name",
-    "addressstreet": "clientAddressStreet",
-    "phone": "clientPhone",
-    "email": "clientEmail"
-  },
+      "agency_name": "Medfield Youth Outreach",
+      "agency_advocate_name": "Lawless, Liz"
+    },
+  "clients":{
+    "primary":{
+        "client_name_first": "Stacey",
+        "client_name_last": "Morrison",
+        "client_addressstreet": "Medfield",
+        "client_isveteran": "0",
+        "client_specialcode": ""
+    },
+      "related": [
+        {
+          "client_name_first": "",
+          "client_name_last": ""
+        }
+      ]
+      },
   "appointment": {
+    "appointment_date_final": "2013-11-09T05:00:00Z",
+      "appointment_countadults": "1",
+      "appointment_countchildren": "0",
     "communicatepref": "email",
     "english": "yes",
     "climbstairs": "yes",
@@ -455,7 +464,7 @@ export default {
   firestore () {
     return {
       appointments: db.collection('appointments')
-      ,agencies:db.collection('agencies')
+      // ,agencies:db.collection('agencies')
     }
   },
   methods: {
@@ -463,8 +472,8 @@ export default {
 console.log(this.$_.pluck(this.agencies,'name'))
 },
 simpleSuggestionList() {
-return this.agencies
-return this.$_.pluck(this.agencies,'name')
+// return this.agencies
+return this.$_.pluck(this.appointments,'agency.agency_name')
         return [
           'Tommy',
           'John',
