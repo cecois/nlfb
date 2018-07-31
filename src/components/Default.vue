@@ -29,7 +29,7 @@
     <vue-simple-suggest
         v-model="temp.agencyListChosen"
         value-attribute="_id"
-  display-attribute="name"
+  display-attribute="agency_name"
         :list="simpleSuggestionList"
         :filter-by-query="true"
         @hover="onSuggestSelect"
@@ -37,38 +37,41 @@
     <!-- Filter by input text to only show the matching results -->
       </vue-simple-suggest>
   </div>
-</div>
+</div><!-- ./field -->
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Address</label>
   <div class="control has-icons-right">
-    <input class="input" type="text" v-model="agency.address" placeholder="">
+    <input class="input" type="text" v-model="agency.agency_addressstreet" placeholder="">
     <span class="icon is-small is-right">
-    <i class="mdi" v-bind:class="{'has-text-success':(validaterex('agency.address','address_street').success==true),'mdi-check':(validaterex('agency.address','address_street').success==true),'mdi-alert':(validaterex('agency.address','address_street').success==false),'has-text-danger':(validaterex('agency.address','address_street').success==false),'has-text-warning':(validaterex('agency.address','address_street').success==false)}"></i>
+    <i class="mdi" v-bind:class="{'has-text-success':(validaterex('agency.agency_addressstreet','address_street').success==true),'mdi-check':(validaterex('agency.agency_addressstreet','address_street').success==true),'mdi-alert':(validaterex('agency.agency_addressstreet','address_street').success==false),'has-text-danger':(validaterex('agency.agency_addressstreet','address_street').success==false),'has-text-warning':(validaterex('agency.agency_addressstreet','address_street').success==false)}"></i>
   </span>
   </input>
-    <em v-bind:class="{'is-hidden':(validaterex('agency.address','address_street').success==0)}">{{validaterex('agency.address','address_street').reason}}</em>
+    <em v-bind:class="{'is-hidden':(validaterex('agency.agency_addressstreet','address_street').success==0)}">{{validaterex('agency.agency_addressstreet','address_street').reason}}</em>
   </div>
-</div>
+</div><!-- ./field -->
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Name</label>
   <div class="control">
-    <input class="input" type="text" v-model="agency.contactname" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="agency.agency_advocate_name" placeholder="autofill frm prior submissions">
+  </input>
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Job Title</label>
   <div class="control">
-    <input class="input" type="text" v-model="agency.contacttitle" placeholder="autofill frm prior submissionsa">
+    <input class="input" type="text" v-model="agency.agency_advocate_title" placeholder="autofill frm prior submissionsa">
+  </input>
   </div>
 </div>
 <!-- ******************************************************************* -->
 <div class="field">
   <label class="label">Agency Contact Phone Number(s)</label>
   <div class="control">
-    <input class="input" type="text" v-model="agency.contactphone" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
+    <input class="input" type="text" v-model="agency.agency_advocate_phone" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
+  </input>
   </div>
 </div>
     </div>
@@ -82,6 +85,13 @@
         <label class="label">(Primary) Client: Full Name</label>
         <div class="control">
           <input class="input" type="text" v-model="clients.primary.client_name_first" placeholder="">
+        </div>
+      </div>
+      <!-- ******************************************************************* -->
+      <div class="field">
+        <label class="label">(Primary) Client: Date of Birth</label>
+        <div class="control">
+          <input class="input" type="text" v-model="clients.primary.client_dob" placeholder="">
         </div>
       </div>
       <!-- ******************************************************************* -->
@@ -105,6 +115,13 @@
           <input class="input" type="text" v-model="clients.primary.client_email" placeholder="">
         </div>
       </div>
+      <!-- ******************************************************************* -->
+      <div class="field">
+        <label class="radio">
+          <div class="control">
+            <input type="radio" value="self" v-model="clients.primary.client_isveteran" name="bt-radio-veteran" checked></input></div>
+          Client is a US Veteran
+        </label>
 </div>
 </div>
 </div>
@@ -130,6 +147,8 @@
 </div>
     </article>
   </div>
+
+  <!-- TILE -------------------------------------------------------- >
   <div class="tile is-parent">
     <article class="tile is-child box">
       <div class="field has-text-centered">
@@ -150,6 +169,8 @@
 </div>
     </article>
   </div>
+
+  <!-- TILE -------------------------------------------------------- >
   <div class="tile is-parent">
     <article class="tile is-child box">
       <div class="field has-text-centered">
@@ -163,6 +184,27 @@
         <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="no">No</label> -->
         <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.climbstairs',$event)" v-model="appointment.climbstairs" value="yes" v-bind:class="{'is-black':(appointment.climbstairs === 'yes')}">Yes</button>
   <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.climbstairs',$event)" v-model="appointment.climbstairs" value="no" v-bind:class="{'is-black':(appointment.climbstairs === 'no')}">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+    </article>
+  </div>
+
+  <!-- TILE -------------------------------------------------------- >
+  <div class="tile is-parent">
+    <article class="tile is-child box">
+      <div class="field has-text-centered">
+  <div class="field-label">
+    <label class="label">Does client require wheelchair access?</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <!-- <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="yes">Yes</label>
+        <label class="radio"><input type="radio" v-model="clientClimbStairs" name="radio-stairs" value="no">No</label> -->
+        <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.wheelchair',$event)" v-model="appointment.wheelchair" value=true v-bind:class="{'is-black':(appointment.wheelchair === true)}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.wheelchair',$event)" v-model="appointment.wheelchair" value="no" v-bind:class="{'is-black':(appointment.wheelchair === false)}">No</button>
       </div>
     </div>
   </div>
@@ -321,6 +363,7 @@
 <!-- ******************************************************************* -->
 
 <button class="button is-large is-black" type="submit">Submit</button>
+
 </form>
 
 </div>
@@ -337,16 +380,23 @@ export default {
   "temp": {
     "agencyListChosen": null
   },
+  "ops":[],
   "agency": {
       "agency_name": "Medfield Youth Outreach",
-      "agency_advocate_name": "Lawless, Liz"
+      "agency_addressstreet":"",
+      "agency_advocate_name": "Lawless, Liz",
+      "agency_advocate_title": "",
+      "agency_advocate_phone":""
     },
   "clients":{
     "primary":{
         "client_name_first": "Stacey",
         "client_name_last": "Morrison",
+        "client_dob": "",
+        "client_phone": "",
+        "client_email": "",
         "client_addressstreet": "Medfield",
-        "client_isveteran": "0",
+        "client_isveteran": false,
         "client_specialcode": ""
     },
       "related": [
@@ -357,12 +407,14 @@ export default {
       ]
       },
   "appointment": {
-    "appointment_date_final": "2013-11-09T05:00:00Z",
-      "appointment_countadults": "1",
-      "appointment_countchildren": "0",
+    "notes_nlfbma":"",
+    "appointment_date_final": "",
+      "appointment_countadults": 1,
+      "appointment_countchildren": 0,
     "communicatepref": "email",
-    "english": "yes",
-    "climbstairs": "yes",
+    "english": true,
+    "climbstairs": true,
+    "wheelchair": false,
     "countadults": 0,
     "countchildren": 0,
     "transpo": "professional",
@@ -454,11 +506,49 @@ export default {
           "status": false,
           "label": "Upholstered Chair",
           "key": "upholsteredchair"
+        },
+        {
+          "status": false,
+          "label": "Bed Frame",
+          "key": "bedframe"
+        },
+        {
+          "status": false,
+          "label": "Lamps",
+          "key": "lamps"
+        },
+        {
+          "status": false,
+          "label": "Dishes/Glassware",
+          "key": "dishes"
         }
       ],
       "small": [],
-      "kitchen": []
+      "kitchen": [],
+      "mattresses":[
+      {
+        "key": "twin",
+        "status": true,
+        "label": "Twin Mattress"
+      }
+      ,{
+        "key": "twin_box",
+        "status": true,
+        "label": "Twin Box Spring"
+      }
+      ,{
+        "key": "double_box",
+        "status": false,
+        "label": "Double Box Spring"
+      }
+      ,{
+        "key": "double",
+        "status": false,
+        "label": "Double Mattress"
+      }
+      ]
     }
+    ,"comments_client":""
   }}
   },
   firestore () {
