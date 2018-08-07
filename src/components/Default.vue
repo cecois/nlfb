@@ -1,5 +1,41 @@
 <template>
 <div>
+<form @submit="testAppointment('fill this in w/ form data later')">
+<form-wizard @on-complete="onComplete"
+                      title="This is a new title"
+                      subtitle="And a new subtitle"
+                      color="#9b59b6">
+  <tab-content title="Agency" icon="mdi mdi-account">
+
+<!-- ******************************************************************* -->
+<div class="field">
+  <label class="label">Agency Name</label>
+  <div class="control">
+<!--     <input class="input" type="text" v-model="fake" placeholder="autofill frm prior submissions"> -->
+    <vue-simple-suggest
+        v-model="temp.agencyListChosen"
+        value-attribute="_id"
+  display-attribute="agency_name"
+        :list="simpleSuggestionList"
+        :filter-by-query="true"
+        @hover="onSuggestSelect"
+          >
+    <!-- Filter by input text to only show the matching results -->
+      </vue-simple-suggest>
+  </div>
+</div><!-- ./field -->
+
+  </tab-content>
+  <tab-content title="Client">
+      detail stuff
+   </tab-content>
+   <tab-content title="Appointment">
+     appt
+   </tab-content>
+   <transition name="fade" mode="out-in">
+        <router-view></router-view>
+      </transition>
+</form-wizard>
 
   <!-- <form @submit="addAppointment(name, image)">
     <input v-model="name" placeholder="Name">
@@ -15,8 +51,8 @@
   icon:<div class="mdi mdi-account"></div>
   </article>
 -->
- <form @submit="testAppointment('fill this in w/ form data later')">
-<button class="button is-large is-black" type="submit">Submit</button>
+
+<!-- <button class="button is-large is-black" type="submit">Submit</button> -->
 
 </form>
 
@@ -32,7 +68,7 @@ export default {
   data () {
     return {
   "temp": {
-    "agencyListChosen": null
+    "agencyListChosen": 'empty'
   },
   "ops":[],
   "agency": {
@@ -216,13 +252,15 @@ export default {
 console.log(this.$_.pluck(this.agencies,'name'))
 },
 simpleSuggestionList() {
-// return this.agencies
-return this.$_.pluck(this.appointments,'agency.agency_name')
-        return [
-          'Tommy',
-          'John',
-          'Hot Dog'
-        ]
+let agencies = this.$_.pluck(this.appointments,'agency.agency_name');
+        // let agencies = [
+        //   {"agency_name":'Tommy'},
+        //   {"agency_name":'John'},
+        //   {"agency_name":'Hot Dog'}
+        // ]
+console.log("agencies",agencies)
+return agencies
+
       },
     addAppointment (name, image) {
       const createdAt = new Date()
@@ -247,6 +285,9 @@ return this.$_.pluck(this.appointments,'agency.agency_name')
     ,onSuggestSelect (s){
       var address_msg = (s.address=='')?"(no address on file - please type it here)":s.address
       this.agency.address = address_msg
+    }
+    ,onComplete (){
+      console.log("form completed")
     }
     ,validaterex (which,type) {
 
