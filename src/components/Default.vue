@@ -7,7 +7,7 @@
                       color="#9b59b6">
   <tab-content title="Agency" icon="mdi mdi-account">
 
-<!-- ******************************************************************* -->
+<!-- ******************************************************************* FIELD -->
 <div class="field">
   <label class="label">Agency Name</label>
   <div class="control">
@@ -24,6 +24,27 @@
       </vue-simple-suggest>
   </div>
 </div><!-- ./field -->
+
+
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Agency Address</label>
+  <div class="control has-icons-right">
+    <input class="input" type="text" v-model="agency" placeholder="">
+    <span class="icon is-small is-right">
+<i class="mdi" v-bind:class="{'has-text-success':(validaterex('agency_addressstreet','address_street').success==true),'mdi-check':(validaterex('agency_addressstreet','address_street').success==true),'mdi-alert':(validaterex('agency_addressstreet','address_street').success==false),'has-text-danger':(validaterex('agency_addressstreet','address_street').success==false),'has-text-warning':(validaterex('agency_addressstreet','address_street').success==false)}"></i>
+  </span>
+  </input>
+  </div>
+</div><!-- ./field -->
+
+
+
+
+
+
+
 
   </tab-content>
   <tab-content title="Client">
@@ -68,7 +89,7 @@ export default {
   data () {
     return {
   "temp": {
-    "agencyListChosen": 'empty'
+    "agencyListChosen": ''
   },
   "ops":[],
   "agency": {
@@ -292,6 +313,8 @@ return agencies
     ,validaterex (which,type) {
 
 let v = this[which];
+
+console.log("v:",v)
 
 if(typeof v !== 'undefined'){
 if(type=='address_street'){
