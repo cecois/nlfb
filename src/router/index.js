@@ -7,15 +7,15 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      name: 'Default',
-      component: Default
-    }
-    ,{
-      path: '/list-agencies',
-      name: 'Agencies-List',
-      component: AgenciesList
-    }
+  {
+    path: '/',
+    name: 'Default',
+    component: Default
+  }
+  ,{
+    path: '/list-agencies',
+    name: 'Agencies-List',
+    component: AgenciesList
+  }
   ]
 })

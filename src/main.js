@@ -22,6 +22,11 @@ import moment from 'moment';
 import App from './App'
 import router from './router'
 
+import VueFormWizard from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+Vue.use(VueFormWizard)
+
+
 Vue.config.productionTip = false
 
 Vue.use(underscore);
@@ -42,17 +47,17 @@ export const db = firebase.firestore()
 // const settings = {timestampsInSnapshots: true}
 // db.settings(settings)
 const firestore = firebaseApp.firestore();
- const settings = {
- 	/* your settings... */
- 	timestampsInSnapshots: true};
+const settings = {
+  /* your settings... */
+  timestampsInSnapshots: true}
   firestore.settings(settings);
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  components: { App, VueSimpleSuggest },
-  template: '<App/>'
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    router,
+    components: { App, VueSimpleSuggest },
+    template: '<App/>'
   // firestore() {
   //   return {
   //       // Collection
