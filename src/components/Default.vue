@@ -13,9 +13,9 @@
   <div class="control">
 <!--     <input class="input" type="text" v-model="fake" placeholder="autofill frm prior submissions"> -->
     <vue-simple-suggest
-        v-model="temp.agencyListChosen"
+        v-model="agency"
         value-attribute="_id"
-  display-attribute="agency_name"
+  display-attribute="this.agency_name"
         :list="simpleSuggestionList"
         :filter-by-query="true"
         @hover="onSuggestSelect"
@@ -33,6 +33,7 @@
   <div class="control has-icons-right">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <input class="input" type="text" v-model="referringAgency.address" placeholder="">
     <span class="icon is-small is-right">
     <i class="mdi" v-bind:class="{'has-text-success':(validaterex('referringAgency.address','address_street').success==true),'mdi-check':(validaterex('referringAgency.address','address_street').success==true),'mdi-alert':(validaterex('referringAgency.address','address_street').success==false),'has-text-danger':(validaterex('referringAgency.address','address_street').success==false),'has-text-warning':(validaterex('referringAgency.address','address_street').success==false)}"></i>
@@ -44,8 +45,11 @@
 =======
     <input class="input" type="text" v-model="agency" placeholder="">
 >>>>>>> cca7d1c9d250a1be58bdf2d2a8c51f46e153283a
+=======
+    <input class="input" type="text" v-model="agency.agency_addressstreet" placeholder="">
+>>>>>>> 1271268c268c010b7946b9b38a479339192ad7b9
     <span class="icon is-small is-right">
-<i class="mdi" v-bind:class="{'has-text-success':(validaterex('agency_addressstreet','address_street').success==true),'mdi-check':(validaterex('agency_addressstreet','address_street').success==true),'mdi-alert':(validaterex('agency_addressstreet','address_street').success==false),'has-text-danger':(validaterex('agency_addressstreet','address_street').success==false),'has-text-warning':(validaterex('agency_addressstreet','address_street').success==false)}"></i>
+<i class="mdi" v-bind:class="{'has-text-success':(validaterex('address_street').success==true),'mdi-check':(validaterex('address_street').success==true),'mdi-alert':(validaterex('address_street').success==false),'has-text-danger':(validaterex('address_street').success==false),'has-text-warning':(validaterex('address_street').success==false)}"></i>
   </span>
   </input>
 <<<<<<< HEAD
@@ -386,13 +390,15 @@ needitemskitchen: []
 console.log(this.$_.pluck(this.agencies,'name'))
 },
 simpleSuggestionList() {
-let agencies = this.$_.pluck(this.appointments,'agency.agency_name');
+// let agencies = this.$_.pluck(this.appointments,'agency.agency_name');
+let agencies = this.$_.uniq(this.$_.map(this.appointments,(apt)=>{
+  return apt.agency.agency_name;
+}));
         // let agencies = [
         //   {"agency_name":'Tommy'},
         //   {"agency_name":'John'},
         //   {"agency_name":'Hot Dog'}
         // ]
-console.log("agencies",agencies)
 return agencies
 
       },
@@ -427,11 +433,19 @@ return agencies
     ,onComplete (){
       console.log("form completed")
     }
-    ,validaterex (which,type) {
+    ,validaterex (type) {
 
-let v = this[which];
+let v = '';
 
-console.log("v:",v)
+switch(type){
+  case 'address_street':
+  v=this.agency.agency_addressstreet;
+  break;
+  default:
+  v='';
+}
+
+// let v = this.temp.agencyListChosen
 
 if(typeof v !== 'undefined'){
 if(type=='address_street'){
