@@ -13,12 +13,12 @@
   <div class="control">
 <!--     <input class="input" type="text" v-model="fake" placeholder="autofill frm prior submissions"> -->
     <vue-simple-suggest
-        v-model="agency"
-        value-attribute="_id"
-  display-attribute="this.agency_name"
+        v-model="agency.agency_name"
+        value-attribute="this"
+  display-attribute="this"
         :list="simpleSuggestionList"
         :filter-by-query="true"
-        @hover="onSuggestSelect"
+        @select="onSuggestSelect"
           >
     <!-- Filter by input text to only show the matching results -->
       </vue-simple-suggest>
@@ -31,71 +31,24 @@
 <div class="field">
   <label class="label">Agency Address</label>
   <div class="control has-icons-right">
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <input class="input" type="text" v-model="referringAgency.address" placeholder="">
-    <span class="icon is-small is-right">
-    <i class="mdi" v-bind:class="{'has-text-success':(validaterex('referringAgency.address','address_street').success==true),'mdi-check':(validaterex('referringAgency.address','address_street').success==true),'mdi-alert':(validaterex('referringAgency.address','address_street').success==false),'has-text-danger':(validaterex('referringAgency.address','address_street').success==false),'has-text-warning':(validaterex('referringAgency.address','address_street').success==false)}"></i>
-  </span>
-  </input>
-    <em v-bind:class="{'is-hidden':(validaterex('referringAgency.address','address_street').success==0)}">{{validaterex('referringAgency.address','address_street').reason}}</em>
-=======
-    <input class="input" type="text" v-model="agency.address" placeholder="">
-=======
-    <input class="input" type="text" v-model="agency" placeholder="">
->>>>>>> cca7d1c9d250a1be58bdf2d2a8c51f46e153283a
-=======
     <input class="input" type="text" v-model="agency.agency_addressstreet" placeholder="">
->>>>>>> 1271268c268c010b7946b9b38a479339192ad7b9
     <span class="icon is-small is-right">
 <i class="mdi" v-bind:class="{'has-text-success':(validaterex('address_street').success==true),'mdi-check':(validaterex('address_street').success==true),'mdi-alert':(validaterex('address_street').success==false),'has-text-danger':(validaterex('address_street').success==false),'has-text-warning':(validaterex('address_street').success==false)}"></i>
   </span>
   </input>
-<<<<<<< HEAD
-    <em v-bind:class="{'is-hidden':(validaterex('agency.address','address_street').success==0)}">{{validaterex('agency.address','address_street').reason}}</em>
->>>>>>> 1b4678d2ef9bac2a4bae571645fe8c12a5b2ab09
-  </div>
-</div>
-<!-- ******************************************************************* -->
-<div class="field">
-  <label class="label">Agency Contact Name</label>
-  <div class="control">
-<<<<<<< HEAD
-    <input class="input" type="text" v-model="referringAgency.advocate_name" placeholder="autofill frm prior submissions">
-=======
-    <input class="input" type="text" v-model="agency.contactname" placeholder="autofill frm prior submissions">
->>>>>>> 1b4678d2ef9bac2a4bae571645fe8c12a5b2ab09
-  </div>
-</div>
-<!-- ******************************************************************* -->
-<div class="field">
-  <label class="label">Agency Contact Job Title</label>
-  <div class="control">
-<<<<<<< HEAD
-    <input class="input" type="text" v-model="referringAgency.advocate_title" placeholder="autofill frm prior submissionsa">
-=======
-    <input class="input" type="text" v-model="agency.contacttitle" placeholder="autofill frm prior submissionsa">
->>>>>>> 1b4678d2ef9bac2a4bae571645fe8c12a5b2ab09
-  </div>
-</div>
-<!-- ******************************************************************* -->
-<div class="field">
-  <label class="label">Agency Contact Phone Number(s)</label>
-  <div class="control">
-<<<<<<< HEAD
-    <input class="input" type="text" v-model="referringAgency.advocate_phone" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
-=======
-    <input class="input" type="text" v-model="agency.contactphone" placeholder="e.g. '617-555-1777' or '617-555-1777, 617.555.0010'">
->>>>>>> 1b4678d2ef9bac2a4bae571645fe8c12a5b2ab09
-=======
->>>>>>> cca7d1c9d250a1be58bdf2d2a8c51f46e153283a
   </div>
 </div><!-- ./field -->
 
 
 
-
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Agency Contact Name</label>
+  <div class="control">
+    <input class="input" type="text" v-model="agency.agency_advocate_name" placeholder="autofill frm prior submissions">
+  </input>
+  </div>
+</div>
 
 
 
@@ -142,87 +95,25 @@ export default {
   name: 'Default',
   data () {
     return {
-<<<<<<< HEAD
-      temp: {
-        "agencyListChosen": null
-      },
-      name: '',
-      image: '',
-referringAgency:{
-  name: '',
-  address: '1122 Boogie Woogie Av.',
-  advocate_name: 'referringAgencyContactName',
-  advocate_title: 'referringAgencyContactTitle',
-  advocate_phone: 'referringAgencyContactPhone',
-},
-clients:{
-  [
-  {name_first: 'clientName',
-  name_middle: 'clientName',
-  name_last: 'clientName'},
-  {name_first: 'clientName',
-  name_middle: 'clientName',
-  name_last: 'clientName'}
-]
-},
-client_prim:{
-address_street: 'addressstreet',
-phone: 'phone',
-email: 'email'
-},
-appointment:
-{
-  communicatepref: 'email',
-  english: "yes",
-climbstairs: 'yes',
-countadults: 0,
-countchildren: 0,
-transpo: 'professional',
-clienttravelmode: [
-{key:'train',status:false,label:"Train"}
-,{key:'bus',status:false,label:"Bus"}
-,{key:'car',status:false,label:"Car"}
-,{key:'movingvan',status:true,label:"Moving Van"}
-],
-needitemslarge: [
-{"key":"couch",status:true,"label":"Couch"}
-,{"key":"table_kitchen",status:false,"label":"Kitchen Table"}
-,{status:false,label:"Area Rug",key:"arearug"}
-,{status:false,label:"Bedding/Towels",key:"bedding_y_towels"}
-,{status:false,label:"Bookcase",key:"bookcase"}
-,{status:false,label:"Chairs",key:"chairs"}
-,{status:false,label:"Chest of Drawers/Bureau",key:"bureau"}
-,{status:false,label:"Coffee Table",key:"coffeetable"}
-,{status:false,label:"Desk",key:"desk"}
-,{status:false,label:"End Table",key:"endtable"}
-,{status:false,label:"Kitchen Table",key:"kitchentable"}
-,{status:false,label:"Nightstand",key:"nightstand"}
-,{status:false,label:"Upholstered Chair",key:"upholsteredchair"}
-],
-needitemssmall: [],
-needitemskitchen: []
-}
-//appointment
-=======
   "temp": {
     "agencyListChosen": ''
   },
   "ops":[],
   "agency": {
-      "agency_name": "Medfield Youth Outreach",
+      "agency_name": "",
       "agency_addressstreet":"",
-      "agency_advocate_name": "Lawless, Liz",
+      "agency_advocate_name": "",
       "agency_advocate_title": "",
       "agency_advocate_phone":""
     },
   "clients":{
     "primary":{
-        "client_name_first": "Stacey",
-        "client_name_last": "Morrison",
+        "client_name_first": "",
+        "client_name_last": "",
         "client_dob": "",
         "client_phone": "",
         "client_email": "",
-        "client_addressstreet": "Medfield",
+        "client_addressstreet": "",
         "client_isveteran": false,
         "client_specialcode": ""
     },
@@ -376,7 +267,6 @@ needitemskitchen: []
       ]
     }
     ,"comments_client":""
->>>>>>> cca7d1c9d250a1be58bdf2d2a8c51f46e153283a
   }}
   },
   firestore () {
@@ -391,6 +281,7 @@ console.log(this.$_.pluck(this.agencies,'name'))
 },
 simpleSuggestionList() {
 // let agencies = this.$_.pluck(this.appointments,'agency.agency_name');
+// let agencies = this.$_.uniq(this.$_.pluck(this.appointments,'agency'));
 let agencies = this.$_.uniq(this.$_.map(this.appointments,(apt)=>{
   return apt.agency.agency_name;
 }));
@@ -420,15 +311,21 @@ return agencies
       this[which]=event.target.value.split(",")
     }
     ,testAppointment (referringAgencyName) {
-      console.log(referringAgency.name)
+      console.log(referringAgencyName)
     }
     ,onSuggestSelect (s){
-      var address_msg = (s.address=='')?"(no address on file - please type it here)":s.address
-<<<<<<< HEAD
-      this.referringAgency.address = address_msg
-=======
-      this.agency.address = address_msg
->>>>>>> 1b4678d2ef9bac2a4bae571645fe8c12a5b2ab09
+      // we don't use ids for agencies (no point except to make specifically this easier)
+      // so we gotta use the agency name string to shop for agencies details
+      let agency_addresses=this.$_.filter(this.$_.map(this.appointments,(appt)=>{return {agency:appt.agency.agency_name,address:appt.agency.agency_addressstreet}}),(agency)=>{
+        return (agency.agency_name==s && agency.agency_addressstreet!=='' && (typeof agency.agency_addressstreet!=='undefined'));
+      });
+      console.log("agency_addresses.length",agency_addresses.length);
+      console.log("agency_addresses",agency_addresses[0].agency_addressstreet);
+      // let addresses = this.$_.pluck(appts_by_agency,'agency_addressstreet')
+      // console.log("addresses:",addresses);
+      this.agency.address = "9 Elm St, Bedford, MA"
+      // ((typeof appt_obj.agency.agency_address == 'undefined') || appt_obj.agency.agency_address=='')?"(no address on file - please type it here)":appt_obj.agency.agency_address
+
     }
     ,onComplete (){
       console.log("form completed")
