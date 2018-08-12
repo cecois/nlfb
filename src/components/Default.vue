@@ -75,7 +75,7 @@
 
 
   <tab-content title="Primary Client">
-      
+
 
 <!-- ******************************************************************* FIELD -->
       <div class="field">
@@ -456,6 +456,14 @@ switch(type){
   case 'dob':
   v=this.clients.primary.client_dob;
   break;
+  break;
+  case 'phone_agency':
+  v=this.agency.agency_advocate_phone;
+  break;
+  break;
+  case 'phone_client':
+  v=this.clients.primary.client_phone;
+  break;
   default:
   v='';
 }
@@ -463,6 +471,9 @@ switch(type){
 // let v = this.temp.agencyListChosen
 
 if(typeof v !== 'undefined'){
+  if(type=='phone_agency'||type=='phone_client'){
+    return (v.replace(/[^0-9]/g,"").length==10)?{success:true}:{success:false,reason:"too few or too many digits"}
+  }
   if(type=='dob'){
 
 let vm = this.$moment(v).format('YYYY.MM.DD');
