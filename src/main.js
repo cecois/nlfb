@@ -15,9 +15,19 @@ import 'vue-simple-suggest/dist/styles.css' // Optional CSS
 import Buefy from 'buefy'
 import 'buefy/lib/buefy.css'
 
+// import {__} from 'levenshtein-dist';
+// Vue.use(levenshtein);
+
+import levenshtein from 'levenshtein-dist';
+// import moment from 'moment';
+Object.defineProperty(Vue.prototype, '$levenshtein', { value: levenshtein });
+
 import underscore from 'vue-underscore';
 import {_} from 'vue-underscore';
+Vue.use(underscore);
+
 import moment from 'moment';
+Object.defineProperty(Vue.prototype, '$moment', { value: moment });
 
 import App from './App'
 import router from './router'
@@ -29,7 +39,6 @@ Vue.use(VueFormWizard)
 
 Vue.config.productionTip = false
 
-Vue.use(underscore);
 Vue.use(Buefy);
 
 // Vue.use(VueFire)

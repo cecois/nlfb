@@ -18,7 +18,7 @@
   display-attribute="this"
         :list="simpleSuggestionList"
         :filter-by-query="true"
-        @select="onSuggestSelect"
+        @select="onSuggestAgencySelect"
           >
     <!-- Filter by input text to only show the matching results -->
       </vue-simple-suggest>
@@ -31,7 +31,7 @@
 <div class="field">
   <label class="label">Agency Address</label>
   <div class="control has-icons-right">
-    <input class="input" type="text" v-model="agency.agency_addressstreet" placeholder="">
+    <input class="input" type="text" v-model="agency.agency_addressstreet">
     <span class="icon is-small is-right">
 <i class="mdi" v-bind:class="{'has-text-success':(validaterex('address_street').success==true),'mdi-check':(validaterex('address_street').success==true),'mdi-alert':(validaterex('address_street').success==false),'has-text-danger':(validaterex('address_street').success==false),'has-text-warning':(validaterex('address_street').success==false)}"></i>
   </span>
@@ -45,18 +45,97 @@
 <div class="field">
   <label class="label">Agency Contact Name</label>
   <div class="control">
-    <input class="input" type="text" v-model="agency.agency_advocate_name" placeholder="autofill frm prior submissions">
+    <input class="input" type="text" v-model="agency.agency_advocate_name">
   </input>
   </div>
 </div>
 
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Agency Contact Job Title</label>
+  <div class="control">
+    <input class="input" type="text" v-model="agency.agency_advocate_title">
+  </input>
+  </div>
+</div>
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Agency Contact Phone Number(s)</label>
+  <div class="control">
+    <input class="input" type="text" v-model="agency.agency_advocate_phone">
+  </input>
+  </div>
+</div>
+
+</tab-content>
 
 
 
-  </tab-content>
-  <tab-content title="Client">
-      detail stuff
+
+
+  <tab-content title="Primary Client">
+      
+
+<!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Client: First Name</label>
+        <div class="control">
+          <input v-on:keyup="similar" class="input" type="text" v-model="clients.primary.client_name_first">
+        </div>
+      </div>
+<!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Client: Last Name</label>
+        <div class="control">
+          <input v-on:keyup="similar" class="input" type="text" v-model="clients.primary.client_name_last">
+        </div>
+      </div>
+      <!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Client: Date of Birth</label>
+        <div class="control">
+          <input v-on:keyup="validaterex('dob')" class="input" type="text" v-model="clients.primary.client_dob">
+        </div>
+      </div>
+      <!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Client: Street Address</label>
+        <div class="control">
+          <input class="input" type="text" v-model="clients.primary.client_addressstreet">
+        </div>
+      </div>
+      <!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Client: Phone #</label>
+        <div class="control">
+          <input class="input" type="text" v-model="clients.primary.client_phone">
+        </div>
+      </div>
+      <!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Client: email</label>
+        <div class="control">
+          <input class="input" type="text" v-model="clients.primary.client_email">
+        </div>
+      </div>
+      <!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="radio">
+          <div class="control">
+            <input type="radio" value="self" v-model="clients.primary.client_isveteran" name="bt-radio-veteran" checked></input></div>
+          Client is a US Veteran
+        </label>
+</div>
+
    </tab-content>
+
+
+<tab-content title="Add'l Clients">
+
+</tab-content>
+
+
    <tab-content title="Appointment">
      appt
    </tab-content>
@@ -95,9 +174,10 @@ export default {
   name: 'Default',
   data () {
     return {
-  "temp": {
+      "temp": {
     "agencyListChosen": ''
   },
+  "flags":[],
   "ops":[],
   "agency": {
       "agency_name": "",
@@ -313,22 +393,57 @@ return agencies
     ,testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
     }
-    ,onSuggestSelect (s){
+    ,onSuggestAgencySelect (s){
       // we don't use ids for agencies (no point except to make specifically this easier)
-      // so we gotta use the agency name string to shop for agencies details
-      let agency_addresses=this.$_.filter(this.$_.map(this.appointments,(appt)=>{return {agency:appt.agency.agency_name,address:appt.agency.agency_addressstreet}}),(agency)=>{
-        return (agency.agency_name==s && agency.agency_addressstreet!=='' && (typeof agency.agency_addressstreet!=='undefined'));
-      });
-      console.log("agency_addresses.length",agency_addresses.length);
-      console.log("agency_addresses",agency_addresses[0].agency_addressstreet);
-      // let addresses = this.$_.pluck(appts_by_agency,'agency_addressstreet')
-      // console.log("addresses:",addresses);
-      this.agency.address = "9 Elm St, Bedford, MA"
-      // ((typeof appt_obj.agency.agency_address == 'undefined') || appt_obj.agency.agency_address=='')?"(no address on file - please type it here)":appt_obj.agency.agency_address
+// 0. filter by that agency's appts
+// 1. reduce to id,date,address-on-file
+// 2. sort by date, take newest
+let this_agency_appts = this.$_.filter(this.appointments,(appt)=>{return appt.agency.agency_name==s});
+let most_recent_appt = this.$_.last(this.$_.sortBy(this_agency_appts,(a)=>{return a.appointment.appointment_date_final}))
+
+
+// 3. deposit data from newest into agency.* values
+      this.agency.agency_addressstreet = (typeof most_recent_appt.agency.agency_addressstreet == 'undefined' || most_recent_appt.agency.agency_addressstreet=='')?"no address on file - please type it here":most_recent_appt.agency.agency_addressstreet;
+      this.agency.agency_advocate_name = (typeof most_recent_appt.agency.agency_advocate_name == 'undefined' || most_recent_appt.agency.agency_advocate_name=='')?"no address on file - please type it here":most_recent_appt.agency.agency_advocate_name;
+      this.agency.agency_advocate_title = (typeof most_recent_appt.agency.agency_advocate_title == 'undefined' || most_recent_appt.agency.agency_advocate_title=='')?"no job title on file for this agent - please type it here":most_recent_appt.agency.agency_advocate_title;    this.agency.agency_advocate_phone = (typeof most_recent_appt.agency.agency_advocate_phone == 'undefined' || most_recent_appt.agency.agency_advocate_phone=='')?"no job title on file for this agent - please type it here":most_recent_appt.agency.agency_advocate_phone;
+
 
     }
     ,onComplete (){
       console.log("form completed")
+    }
+    ,similar () {
+      // console.log("typeof first",(typeof this.clients.primary.client_name_first));
+      // console.log("typeof last",(typeof this.clients.primary.client_name_last));
+      let names_extant = this.$_.uniq(this.$_.map(this.appointments,(appt)=>{
+              return appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first
+            }))//map.uniq
+
+      var name_current = this.clients.primary.client_name_last+', '+this.clients.primary.client_name_first
+
+      let FLAGGED = this.$_.filter(this.$_.map(names_extant,(n)=>{
+              let t = {name:n,levenshtein:this.$levenshtein(n, name_current)}
+              console.log("t",t);
+              return t
+            }),(t)=>{
+        return t.levenshtein<=5;
+            });//flag
+console.log("FLAGGED",FLAGGED);
+if(FLAGGED.length>0){
+  // this.flags.push({
+  //   possible_duplicate_client:FLAGGED
+  // })
+  this.flags=this.$_.uniq(this.flags).push({possible_duplicate_client:FLAGGED})
+}
+      // console.log(FLAGGED);
+      // console.log(FLAGGED.length);
+      // if(this.clients.primary.client_name_last!==''&&this.clients.primary.client_name_first!=='')
+      // {
+        // console.log(this.$levenshtein(this.clients.primary.client_name_last+', '+this.clients.primary.client_name_first,names_extant))
+      // }
+
+      // console.log(this.$levenshtein('kitten', 'sitting'))
+
     }
     ,validaterex (type) {
 
@@ -338,6 +453,9 @@ switch(type){
   case 'address_street':
   v=this.agency.agency_addressstreet;
   break;
+  case 'dob':
+  v=this.clients.primary.client_dob;
+  break;
   default:
   v='';
 }
@@ -345,6 +463,12 @@ switch(type){
 // let v = this.temp.agencyListChosen
 
 if(typeof v !== 'undefined'){
+  if(type=='dob'){
+
+let vm = this.$moment(v).format('YYYY.MM.DD');
+console.log("vm:",vm);
+
+  }
 if(type=='address_street'){
 let clauses = v.split(",")
 let re = {success:false,reason:"missing address components"};
