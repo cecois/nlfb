@@ -2,6 +2,7 @@
 <div>
 <form @submit="testAppointment('fill this in w/ form data later')">
 <form-wizard @on-complete="onComplete"
+:start-index="3"
                       title="This is a new title"
                       subtitle="And a new subtitle"
                       color="#9b59b6">
@@ -74,7 +75,7 @@
 
 
 
-  <tab-content title="Primary Client">
+  <tab-content title="Primary Client" >
 
 
 <!-- ******************************************************************* FIELD -->
@@ -123,7 +124,7 @@
       <div class="field">
         <label class="radio">
           <div class="control">
-            <input type="radio" value="self" v-model="clients.primary.client_isveteran" name="bt-radio-veteran" checked></input></div>
+            <input type="radio" value="true" v-model="clients.primary.client_isveteran" name="bt-radio-veteran" checked></input></div>
           Client is a US Veteran
         </label>
 </div>
@@ -132,12 +133,44 @@
 
 
 <tab-content title="Add'l Clients">
-
+<ul id="clients_related">
+  <li v-for="client in clients.related">
+    <!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Add'l Client: First Name</label>
+        <div class="control">
+          <input class="input" type="text" v-model="client.client_name_first">
+        </div>
+      </div>
+<!-- ******************************************************************* FIELD -->
+      <div class="field">
+        <label class="label">Add'l Client: Last Name</label>
+        <div class="control">
+          <input class="input" type="text" v-model="client.client_name_last">
+        </div>
+      </div>
+  </li>
+</ul>
+<span class="icon">
+<i v-on:click="add_client_addl" class="mdi mdi-plus"/>
+</span>
 </tab-content>
 
 
    <tab-content title="Appointment">
-     appt
+<!-- ******************************************************************* FIELD -->
+         <div class="field has-text-centered">
+  <label class="label">What's the best way to communicate with the client?</label>
+  <div class="control">
+    <div class="buttons">
+  <button class="button" v-on:click.self.prevent v-on:click="swap_com_pref($event)" value="phone" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'phone')}">Phone</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.communicatepref',$event)" value="text" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'text')}">Text</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.communicatepref',$event)" value="email" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'email')}">Email</button>
+</div><!-- /.buttons -->
+  </div><!-- /.control -->
+</div><!-- /.field -->
+
+
    </tab-content>
    <transition name="fade" mode="out-in">
         <router-view></router-view>
@@ -194,7 +227,7 @@ export default {
         "client_phone": "",
         "client_email": "",
         "client_addressstreet": "",
-        "client_isveteran": false,
+        "client_isveteran": "false",
         "client_specialcode": ""
     },
       "related": [
@@ -356,6 +389,9 @@ export default {
     }
   },
   methods: {
+    add_client_addl(){
+this.clients.related.push({})
+    },
   test(){
 console.log(this.$_.pluck(this.agencies,'name'))
 },
@@ -410,7 +446,7 @@ let most_recent_appt = this.$_.last(this.$_.sortBy(this_agency_appts,(a)=>{retur
 
     }
     ,onComplete (){
-      console.log("form completed")
+      console.log(JSON.stringify(this))
     }
     ,similar () {
       // console.log("typeof first",(typeof this.clients.primary.client_name_first));
@@ -505,11 +541,10 @@ else {
   return false;
 }
     }
-    ,swap (which,event) {
+    ,swap_com_pref (event) {
+      
       let nv = event.target.value.toLowerCase()
-      console.log(this[which])
-      this[which]=nv
-      // this[which]=nv
+      this.appointment.communicatepref=nv
     }
   },
   computed: {
