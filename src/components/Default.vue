@@ -164,8 +164,8 @@
   <div class="control">
     <div class="buttons">
   <button class="button" v-on:click.self.prevent v-on:click="swap_com_pref($event)" value="phone" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'phone')}">Phone</button>
-  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.communicatepref',$event)" value="text" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'text')}">Text</button>
-  <button class="button" v-on:click.self.prevent v-on:click="swap('appointment.communicatepref',$event)" value="email" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'email')}">Email</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap_com_pref($event)" value="text" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'text')}">Text</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap_com_pref($event)" value="email" v-model="appointment.communicatepref" v-bind:class="{'is-black':(appointment.communicatepref === 'email')}">Email</button>
 </div><!-- /.buttons -->
   </div><!-- /.control -->
 </div><!-- /.field -->
@@ -452,7 +452,13 @@ let most_recent_appt = this.$_.last(this.$_.sortBy(this_agency_appts,(a)=>{retur
       // console.log("typeof first",(typeof this.clients.primary.client_name_first));
       // console.log("typeof last",(typeof this.clients.primary.client_name_last));
       let names_extant = this.$_.uniq(this.$_.map(this.appointments,(appt)=>{
-              return appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first
+        let names=[]
+        names.push(appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first)
+
+        this.$_.each(appt.clients.related,(cr)=>{
+          names.push(cr.client_name_last+", "+cr.client_name_first);
+        })
+              // return appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first
             }))//map.uniq
 
       var name_current = this.clients.primary.client_name_last+', '+this.clients.primary.client_name_first
