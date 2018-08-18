@@ -171,6 +171,127 @@
 </div><!-- /.field -->
 
 
+<!-- ******************************************************************* FIELD -->
+<div class="field has-text-centered">
+  <div class="field-label">
+    <label class="label">Does the client speak English?</label>
+  </div>
+  <div class="field-body">
+    <div class="field is-narrow">
+      <div class="control">
+        <button class="button" v-on:click.self.prevent v-on:click="swap_lang_pref($event)" v-model="appointment.english" value="true" v-bind:class="{'is-black':(appointment.english === 'true')}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap_lang_pref($event)" v-model="appointment.english" value="false" v-bind:class="{'is-black':(appointment.english === 'false')}">No</button>
+      </div><!-- /.control -->
+    </div>
+  </div>
+  <em v-if="appointment.english=='no'">(You selected "no" - the client must bring an English speaking person to the warehouse to translate.)</em>
+</div><!-- /.field -->
+
+
+
+<!-- ******************************************************************* FIELD -->
+<div class="field has-text-centered">
+  <div class="field-label">
+    <label class="label">Is client able to climb 3 flights of stairs?</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <button class="button" v-on:click.self.prevent v-on:click="swap_stairs_pref($event)" v-model="appointment.climbstairs" value="true" v-bind:class="{'is-black':(appointment.climbstairs === 'true')}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap_stairs_pref($event)" v-model="appointment.climbstairs" value="false" v-bind:class="{'is-black':(appointment.climbstairs === 'false')}">No</button>
+      </div><!-- /.control -->
+    </div>
+  </div>
+</div><!-- /.field -->
+
+
+
+<!-- ******************************************************************* FIELD -->
+<div class="field has-text-centered">
+  <div class="field-label">
+    <label class="label">Does client require wheelchair access?</label>
+  </div>
+  <div class="field-body">
+    <!-- <div class="field"> -->
+      <div class="control">
+        <button class="button" v-on:click.self.prevent v-on:click="swap_wheelchair_pref($event)" v-model="appointment.wheelchair" value="true" v-bind:class="{'is-black':(appointment.wheelchair === 'true')}">Yes</button>
+  <button class="button" v-on:click.self.prevent v-on:click="swap_wheelchair_pref($event)" v-model="appointment.wheelchair" value="false" v-bind:class="{'is-black':(appointment.wheelchair === 'false')}">No</button>
+      </div><!-- /.control -->
+    <!-- </div> -->
+  </div>
+</div><!-- /.field -->
+
+
+
+<!-- ******************************************************************* NON-FIELD -->
+<div class="has-text-danger has-text-centered is-size-3">Our warehouse is NOT a safe environment for children.</div>
+
+
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label"># adults (18+) living in home</label>
+  <div class="control has-icons-right">
+    <input class="input" type="text" v-model="appointment.countadults" placeholder="">
+    <span class="icon is-small is-right">
+      <i class="mdi" v-bind:class="{'has-text-success':appointment.countadults>0,'mdi-check':isNaN(appointment.countadults)==false,'mdi-alert':isNaN(appointment.countadults)==true||appointment.countadults=='','has-text-danger':isNaN(appointment.countadults)==true,'has-text-warning':appointment.countadults==''}"></i>
+    </span>
+
+  </div>
+</div>
+<em v-if="isNaN(appointment.countadults)==true">this needs to be a number</em>
+
+
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label"># children (17 and under) living in home</label>
+  <div class="control has-icons-right">
+    <input class="input" type="text" v-model="appointment.countchildren" placeholder="">
+        <span class="icon is-small is-right">
+      <i class="mdi" v-bind:class="{'has-text-success':appointment.countchildren>0,'mdi-check':isNaN(appointment.countchildren)==false,'mdi-alert':isNaN(appointment.countchildren)==true||appointment.countchildren=='','has-text-danger':isNaN(appointment.countchildren)==true,'has-text-warning':appointment.countchildren==''}"></i>
+    </span>
+  </div>
+</div>
+<em v-if="isNaN(appointment.countchildren)==true">this needs to be a number</em>
+
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <div class="field-label">
+    <label class="has-text-left label">Moving Transportation:</label>
+  </div>
+  <div class="field-body">
+      <div class="control">
+        <label class="radio">
+          <input type="radio" value="professional" v-model="appointment.transpo" name="bt-radio-transpo"></input>Referring Agency has arranged professional movers</label>
+        <label class="radio">
+          <input type="radio" value="self" v-model="appointment.transpo" name="bt-radio-transpo" checked></input>
+          Client will bring box truck (rental or other) and moving helper
+        </label>
+      </div><!-- /.control -->
+  </div><!-- /.field-body -->
+</div><!-- /.field -->
+
+
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <div class="field-label">
+    <label class="has-text-left label">Professional movers. Please select how the client will travel to warehouse to meet moving van.</label>
+  </div><!-- /.field-label -->
+  <div class="field-body">
+      <div class="control">
+<label class="radio" v-if="appointment.travelmode!==null" v-for="(mode) in appointment.travelmode">
+<input type="radio" name="bt-radio-travelMode" :checked="mode.status" @click="changeStatusRadio('appointment.travelmode',mode.key)">
+{{lmode.label}}
+</input>
+</label>
+
+      </div><!-- /.control -->
+  </div><!-- /.field-body -->
+</div><!-- /.field -->
+
    </tab-content>
    <transition name="fade" mode="out-in">
         <router-view></router-view>
@@ -243,31 +364,31 @@ export default {
       "appointment_countadults": 1,
       "appointment_countchildren": 0,
     "communicatepref": "email",
-    "english": true,
-    "climbstairs": true,
-    "wheelchair": false,
+    "english": "true",
+    "climbstairs": "true",
+    "wheelchair": "false",
     "countadults": 0,
     "countchildren": 0,
     "transpo": "professional",
     "travelmode": [
       {
         "key": "train",
-        "status": false,
+        "status": "false",
         "label": "Train"
       },
       {
         "key": "bus",
-        "status": false,
+        "status": "false",
         "label": "Bus"
       },
       {
         "key": "car",
-        "status": false,
+        "status": "false",
         "label": "Car"
       },
       {
         "key": "movingvan",
-        "status": true,
+        "status": "true",
         "label": "Moving Van"
       }
     ],
@@ -275,81 +396,81 @@ export default {
       "large": [
         {
           "key": "couch",
-          "status": true,
+          "status": "true",
           "label": "Couch"
         },
         {
           "key": "table_kitchen",
-          "status": false,
+          "status": "false",
           "label": "Kitchen Table"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Area Rug",
           "key": "arearug"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Bedding/Towels",
           "key": "bedding_y_towels"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Bookcase",
           "key": "bookcase"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Chairs",
           "key": "chairs"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Chest of Drawers/Bureau",
           "key": "bureau"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Coffee Table",
           "key": "coffeetable"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Desk",
           "key": "desk"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "End Table",
           "key": "endtable"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Kitchen Table",
           "key": "kitchentable"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Nightstand",
           "key": "nightstand"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Upholstered Chair",
           "key": "upholsteredchair"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Bed Frame",
           "key": "bedframe"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Lamps",
           "key": "lamps"
         },
         {
-          "status": false,
+          "status": "false",
           "label": "Dishes/Glassware",
           "key": "dishes"
         }
@@ -359,22 +480,22 @@ export default {
       "mattresses":[
       {
         "key": "twin",
-        "status": true,
+        "status": "true",
         "label": "Twin Mattress"
       }
       ,{
         "key": "twin_box",
-        "status": true,
+        "status": "true",
         "label": "Twin Box Spring"
       }
       ,{
         "key": "double_box",
-        "status": false,
+        "status": "false",
         "label": "Double Box Spring"
       }
       ,{
         "key": "double",
-        "status": false,
+        "status": "false",
         "label": "Double Mattress"
       }
       ]
@@ -514,7 +635,7 @@ switch(type){
 
 if(typeof v !== 'undefined'){
   if(type=='phone_agency'||type=='phone_client'){
-    return (v.replace(/[^0-9]/g,"").length==10)?{success:true}:{success:false,reason:"too few or too many digits"}
+    return (v.replace(/[^0-9]/g,"").length==10)?{success:true}:{success:"false",reason:"too few or too many digits"}
   }
   if(type=='dob'){
 
@@ -524,7 +645,7 @@ console.log("vm:",vm);
   }
 if(type=='address_street'){
 let clauses = v.split(",")
-let re = {success:false,reason:"missing address components"};
+let re = {success:"false",reason:"missing address components"};
 
 // 11 trenton pl, anton
 switch (true) {
@@ -551,6 +672,18 @@ else {
       
       let nv = event.target.value.toLowerCase()
       this.appointment.communicatepref=nv
+    },swap_lang_pref (event) {
+      
+      let nv = event.target.value.toLowerCase()
+      this.appointment.english=nv
+    },swap_stairs_pref (event) {
+      
+      let nv = event.target.value.toLowerCase()
+      this.appointment.climbstairs=nv
+    },swap_wheelchair_pref (event) {
+      
+      let nv = event.target.value.toLowerCase()
+      this.appointment.wheelchair=nv
     }
   },
   computed: {
