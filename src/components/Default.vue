@@ -2,7 +2,7 @@
 <div>
 <form @submit="testAppointment('fill this in w/ form data later')">
 <form-wizard @on-complete="onComplete"
-:start-index="3"
+:start-index="1"
                       title="This is a new title"
                       subtitle="And a new subtitle"
                       color="#9b59b6">
@@ -573,18 +573,22 @@ let most_recent_appt = this.$_.last(this.$_.sortBy(this_agency_appts,(a)=>{retur
       // console.log("typeof first",(typeof this.clients.primary.client_name_first));
       // console.log("typeof last",(typeof this.clients.primary.client_name_last));
       let names_extant = this.$_.uniq(this.$_.map(this.appointments,(appt)=>{
-        let names=[]
+        var names=[]
         names.push(appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first)
 
         this.$_.each(appt.clients.related,(cr)=>{
-          names.push(cr.client_name_last+", "+cr.client_name_first);
+          if(cr.client_name_last.length>0 && cr.client_name_first.length>0){
+                    names.push(cr.client_name_last+", "+cr.client_name_first);}
         })
               // return appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first
+      return names
             }))//map.uniq
+
 
       var name_current = this.clients.primary.client_name_last+', '+this.clients.primary.client_name_first
 
       let FLAGGED = this.$_.filter(this.$_.map(names_extant,(n)=>{
+if(this.$levenshtein(n, name_current)<10){console.log("n",n);console.log("nc",name_current)}
               let t = {name:n,levenshtein:this.$levenshtein(n, name_current)}
               console.log("t",t);
               return t
@@ -669,7 +673,7 @@ else {
 }
     }
     ,swap_com_pref (event) {
-      
+
       let nv = event.target.value.toLowerCase()
       this.appointment.communicatepref=nv
     },swap_lang_pref (event) {
