@@ -267,7 +267,6 @@
     <label class="has-text-left label">Moving Transportation:</label>
   </div>
   <div class="field-body">
-    <div class="field is-narrow">
       <div class="control">
         <label class="radio">
           <input type="radio" value="professional" v-model="appointment.transpo" name="bt-radio-transpo"></input>Referring Agency has arranged professional movers</label>
@@ -275,32 +274,27 @@
           <input type="radio" value="self" v-model="appointment.transpo" name="bt-radio-transpo" checked></input>
           Client will bring box truck (rental or other) and moving helper
         </label>
-      </div>
-    </div>
-  </div>
-
-</div>
+      </div><!-- /.control -->
+  </div><!-- /.field-body -->
+</div><!-- /.field -->
     </article>
 <!-- ******************************************************************* -->
     <article class="tile is-child box" v-if="appointment.transpo == 'professional'">
 <div class="field">
   <div class="field-label">
     <label class="has-text-left label">Professional movers. Please select how the client will travel to warehouse to meet moving van.</label>
-  </div>
+  </div><!-- /.field-label -->
   <div class="field-body">
-    <div class="field is-narrow">
       <div class="control">
 
-<label class="radio" v-for="item in appointment.travelmode">
+<label class="radio" v-for="item in appointment.travelmode"></label>
 <input type="radio" name="bt-radio-travelMode" :checked="item.status" @click="changeStatusRadio('appointment.travelmode',item.key)">
 {{item.label}}
 </input>
-</label>
 
-      </div>
-    </div>
-  </div>
-</div>
+      </div><!-- /.control -->
+  </div><!-- /.field-body -->
+</div><!-- /.field -->
     </article>
       </div><!-- /.tile.is-parent -->
 </div><!-- /.tile.is-ancestor -->
@@ -526,24 +520,24 @@ export default {
       "mattresses":[
       {
         "key": "twin",
-        "status": true,
+        "status": false,
         "label": "Twin Mattress"
       }
       ,{
         "key": "twin_box",
-        "status": true,
+        "status": false,
         "label": "Twin Box Spring"
+      },{
+        "key": "double",
+        "status": false,
+        "label": "Double Mattress"
       }
       ,{
         "key": "double_box",
         "status": false,
         "label": "Double Box Spring"
       }
-      ,{
-        "key": "double",
-        "status": false,
-        "label": "Double Mattress"
-      }
+      
       ]
     }
     ,"comments_client":""

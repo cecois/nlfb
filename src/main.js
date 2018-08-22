@@ -33,6 +33,7 @@ import App from './App'
 import router from './router'
 
 import VueFormWizard from 'vue-form-wizard'
+// https://www.npmjs.com/package/vue-form-wizard
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 Vue.use(VueFormWizard)
 

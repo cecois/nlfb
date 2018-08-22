@@ -2,11 +2,12 @@
 <div>
 <form @submit="testAppointment('fill this in w/ form data later')">
 <form-wizard @on-complete="onComplete"
-:start-index="1"
+:start-index="4"
                       title="This is a new title"
                       subtitle="And a new subtitle"
                       color="#9b59b6">
-  <tab-content title="Agency" icon="mdi mdi-account">
+  <tab-content class="" title="Agency" icon="mdi mdi-account">
+
 
 <!-- ******************************************************************* FIELD -->
 <div class="field">
@@ -27,7 +28,6 @@
 </div><!-- ./field -->
 
 
-
 <!-- ******************************************************************* FIELD -->
 <div class="field">
   <label class="label">Agency Address</label>
@@ -38,7 +38,8 @@
   </span>
   </input>
   </div>
-</div><!-- ./field -->
+</div>
+
 
 
 
@@ -51,6 +52,7 @@
   </div>
 </div>
 
+
 <!-- ******************************************************************* FIELD -->
 <div class="field">
   <label class="label">Agency Contact Job Title</label>
@@ -59,6 +61,7 @@
   </input>
   </div>
 </div>
+
 
 <!-- ******************************************************************* FIELD -->
 <div class="field">
@@ -69,13 +72,12 @@
   </div>
 </div>
 
+
+
 </tab-content>
 
 
-
-
-
-  <tab-content title="Primary Client" >
+  <tab-content title="Client(s)" >
 
 
 <!-- ******************************************************************* FIELD -->
@@ -129,10 +131,7 @@
         </label>
 </div>
 
-   </tab-content>
-
-
-<tab-content title="Add'l Clients">
+<h5 class="is-size-5">Add'l Clients</h5>up zz
 <ul id="clients_related">
   <li v-for="client in clients.related">
     <!-- ******************************************************************* FIELD -->
@@ -154,8 +153,32 @@
 <span class="icon">
 <i v-on:click="add_client_addl" class="mdi mdi-plus"/>
 </span>
-</tab-content>
 
+   </tab-content>
+
+
+<!-- <tab-content title="Add'l Clients">
+<ul id="clients_related">
+  <li v-for="client in clients.related">
+      <div class="field">
+        <label class="label">Add'l Client: First Name</label>
+        <div class="control">
+          <input class="input" type="text" v-model="client.client_name_first">
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Add'l Client: Last Name</label>
+        <div class="control">
+          <input class="input" type="text" v-model="client.client_name_last">
+        </div>
+      </div>
+  </li>
+</ul>
+<span class="icon">
+<i v-on:click="add_client_addl" class="mdi mdi-plus"/>
+</span>
+</tab-content>
+ -->
 
    <tab-content title="Appointment">
 <!-- ******************************************************************* FIELD -->
@@ -276,7 +299,7 @@
 
 
 <!-- ******************************************************************* FIELD -->
-<div class="field">
+<div class="field" v-if="appointment.transpo == 'professional'">
   <div class="field-label">
     <label class="has-text-left label">Professional movers. Please select how the client will travel to warehouse to meet moving van.</label>
   </div><!-- /.field-label -->
@@ -284,15 +307,64 @@
       <div class="control">
 <label class="radio" v-if="appointment.travelmode!==null" v-for="(mode) in appointment.travelmode">
 <input type="radio" name="bt-radio-travelMode" :checked="mode.status" @click="changeStatusRadio('appointment.travelmode',mode.key)">
-{{lmode.label}}
+{{mode.label}}
 </input>
 </label>
 
       </div><!-- /.control -->
   </div><!-- /.field-body -->
+  <p class="has-text-centered"><em>(Freight elevator available if necessary.)</em></p>
 </div><!-- /.field -->
+</tab-content>
 
-   </tab-content>
+<tab-content title="Client Needs">
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Mattress(es)</label >
+  <div class="control">
+    <div class="buttons">
+<button v-on:click.self.prevent v-for="mattress in appointment.needs.mattresses" @click="mattress.status=!mattress.status" class="button" v-bind:class="{ 'is-black':mattress.status }">{{mattress.label}}</button>
+</div>
+  </div>
+</div>
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Large Items</label >
+  <div class="control">
+    <div class="buttons">
+<button v-on:click.self.prevent v-for="need in appointment.needs.large" @click="need.status=!need.status" class="button" v-bind:class="{ 'is-black':need.status }">{{need.label}}</button>
+</div>
+  </div>
+</div>
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Small Appliances (comma-delimited)</label>
+  <div class="control">
+    <input class="input" type="text" v-model="appointment.needs.small" v-on:keyup="prepSmallArray($event)">
+  </div>
+</div>
+
+<!-- ******************************************************************* FIELD -->
+      <div class="field">
+  <label class="label">Kitchen Items (comma-delimited)</label>
+  <div class="control">
+    <input class="input" type="text" v-on:keyup="prepKitchenArray($event)">
+  </div>
+</div>
+
+<!-- ******************************************************************* FIELD -->
+<div class="field">
+  <label class="label">Appointment Comments</label>
+  <div class="control">
+    <input class="input" type="text" v-model="appointment.comments_client"/>
+  </div><!-- .control -->
+  </div><!-- .field -->
+
+</tab-content>
+
    <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -396,81 +468,81 @@ export default {
       "large": [
         {
           "key": "couch",
-          "status": "true",
+          "status": false,
           "label": "Couch"
         },
         {
           "key": "table_kitchen",
-          "status": "false",
+          "status": false,
           "label": "Kitchen Table"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Area Rug",
           "key": "arearug"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Bedding/Towels",
           "key": "bedding_y_towels"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Bookcase",
           "key": "bookcase"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Chairs",
           "key": "chairs"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Chest of Drawers/Bureau",
           "key": "bureau"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Coffee Table",
           "key": "coffeetable"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Desk",
           "key": "desk"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "End Table",
           "key": "endtable"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Kitchen Table",
           "key": "kitchentable"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Nightstand",
           "key": "nightstand"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Upholstered Chair",
           "key": "upholsteredchair"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Bed Frame",
           "key": "bedframe"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Lamps",
           "key": "lamps"
         },
         {
-          "status": "false",
+          "status": false,
           "label": "Dishes/Glassware",
           "key": "dishes"
         }
@@ -480,24 +552,24 @@ export default {
       "mattresses":[
       {
         "key": "twin",
-        "status": "true",
+        "status": false,
         "label": "Twin Mattress"
       }
       ,{
         "key": "twin_box",
-        "status": "true",
+        "status": false,
         "label": "Twin Box Spring"
+      },{
+        "key": "double",
+        "status": false,
+        "label": "Double Mattress"
       }
       ,{
         "key": "double_box",
-        "status": "false",
+        "status": false,
         "label": "Double Box Spring"
       }
-      ,{
-        "key": "double",
-        "status": "false",
-        "label": "Double Mattress"
-      }
+      
       ]
     }
     ,"comments_client":""
@@ -517,16 +589,9 @@ this.clients.related.push({})
 console.log(this.$_.pluck(this.agencies,'name'))
 },
 simpleSuggestionList() {
-// let agencies = this.$_.pluck(this.appointments,'agency.agency_name');
-// let agencies = this.$_.uniq(this.$_.pluck(this.appointments,'agency'));
 let agencies = this.$_.uniq(this.$_.map(this.appointments,(apt)=>{
   return apt.agency.agency_name;
 }));
-        // let agencies = [
-        //   {"agency_name":'Tommy'},
-        //   {"agency_name":'John'},
-        //   {"agency_name":'Hot Dog'}
-        // ]
 return agencies
 
       },
@@ -543,9 +608,11 @@ return agencies
         k.status = (k.key!==truth)?false:true;
       })
     }
-    ,prepArray (which,event) {
-      // console.log(event.target.value.toLowerCase())
-      this[which]=event.target.value.split(",")
+    ,prepKitchenArray (event) {
+this.appointment.needs.kitchen=this.$_.map(event.target.value.split(","),(e)=>{return e.trim();});
+    }
+    ,prepSmallArray (event) {
+this.appointment.needs.small=this.$_.map(event.target.value.split(","),(e)=>{return e.trim();});
     }
     ,testAppointment (referringAgencyName) {
       console.log(referringAgencyName)
@@ -570,8 +637,7 @@ let most_recent_appt = this.$_.last(this.$_.sortBy(this_agency_appts,(a)=>{retur
       console.log(JSON.stringify(this))
     }
     ,similar () {
-      // console.log("typeof first",(typeof this.clients.primary.client_name_first));
-      // console.log("typeof last",(typeof this.clients.primary.client_name_last));
+
       let names_extant = this.$_.uniq(this.$_.map(this.appointments,(appt)=>{
         var names=[]
         names.push(appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first)
@@ -580,7 +646,6 @@ let most_recent_appt = this.$_.last(this.$_.sortBy(this_agency_appts,(a)=>{retur
           if(cr.client_name_last.length>0 && cr.client_name_first.length>0){
                     names.push(cr.client_name_last+", "+cr.client_name_first);}
         })
-              // return appt.clients.primary.client_name_last+", "+appt.clients.primary.client_name_first
       return names
             }))//map.uniq
 
@@ -597,19 +662,9 @@ if(this.$levenshtein(n, name_current)<10){console.log("n",n);console.log("nc",na
             });//flag
 console.log("FLAGGED",FLAGGED);
 if(FLAGGED.length>0){
-  // this.flags.push({
-  //   possible_duplicate_client:FLAGGED
-  // })
+  
   this.flags=this.$_.uniq(this.flags).push({possible_duplicate_client:FLAGGED})
 }
-      // console.log(FLAGGED);
-      // console.log(FLAGGED.length);
-      // if(this.clients.primary.client_name_last!==''&&this.clients.primary.client_name_first!=='')
-      // {
-        // console.log(this.$levenshtein(this.clients.primary.client_name_last+', '+this.clients.primary.client_name_first,names_extant))
-      // }
-
-      // console.log(this.$levenshtein('kitten', 'sitting'))
 
     }
     ,validaterex (type) {
@@ -635,8 +690,6 @@ switch(type){
   v='';
 }
 
-// let v = this.temp.agencyListChosen
-
 if(typeof v !== 'undefined'){
   if(type=='phone_agency'||type=='phone_client'){
     return (v.replace(/[^0-9]/g,"").length==10)?{success:true}:{success:"false",reason:"too few or too many digits"}
@@ -651,7 +704,6 @@ if(type=='address_street'){
 let clauses = v.split(",")
 let re = {success:"false",reason:"missing address components"};
 
-// 11 trenton pl, anton
 switch (true) {
   case clauses.length<2 || clauses[1].length<4:
     re.success=false;
@@ -698,6 +750,9 @@ else {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+..wizard-nav-pills{
+  width:50%;
+}
 h1, h2 {
   font-weight: normal;
 }
