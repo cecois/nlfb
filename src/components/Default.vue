@@ -441,7 +441,7 @@ export default {
     "wheelchair": "false",
     "countadults": 0,
     "countchildren": 0,
-    "transpo": "professional",
+    "transpo": "",
     "travelmode": [
       {
         "key": "train",
@@ -569,7 +569,7 @@ export default {
         "status": false,
         "label": "Double Box Spring"
       }
-      
+
       ]
     }
     ,"comments_client":""
@@ -585,7 +585,16 @@ export default {
     add_client_addl(){
 this.clients.related.push({})
     },
-  test(){
+    getAppointmentDate(){
+
+// NEEDS CONFIRM - some pro/self logic goes here
+let delaydays = (this.appointment.transpo=='professional')?7:0;
+
+// 1. call to gcal - whats the first hour during open hours of business on or after that date?
+// WE NEED here: open hours and a source of occasional/emergency closures
+
+    }
+  ,test(){
 console.log(this.$_.pluck(this.agencies,'name'))
 },
 simpleSuggestionList() {
@@ -596,7 +605,8 @@ return agencies
 
       },
     addAppointment (name, image) {
-      const createdAt = new Date()
+      // const createdAt = new Date()
+
       // db.collection('appointments').add({ name, image, createdAt })
     },
     deleteAppointment (id) {
@@ -662,7 +672,7 @@ if(this.$levenshtein(n, name_current)<10){console.log("n",n);console.log("nc",na
             });//flag
 console.log("FLAGGED",FLAGGED);
 if(FLAGGED.length>0){
-  
+
   this.flags=this.$_.uniq(this.flags).push({possible_duplicate_client:FLAGGED})
 }
 
@@ -729,15 +739,15 @@ else {
       let nv = event.target.value.toLowerCase()
       this.appointment.communicatepref=nv
     },swap_lang_pref (event) {
-      
+
       let nv = event.target.value.toLowerCase()
       this.appointment.english=nv
     },swap_stairs_pref (event) {
-      
+
       let nv = event.target.value.toLowerCase()
       this.appointment.climbstairs=nv
     },swap_wheelchair_pref (event) {
-      
+
       let nv = event.target.value.toLowerCase()
       this.appointment.wheelchair=nv
     }
