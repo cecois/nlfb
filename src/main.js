@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 
+var CONFIG = require('./Config.json')
+
 // firebase stuff
 // import VueFire from 'vuefire'
 import VUEFIRESTORE from 'vue-firestore'
@@ -39,6 +41,10 @@ Vue.use(VueFormWizard)
 
 
 Vue.config.productionTip = false
+
+console.log("process.env.G_*:");
+console.log(process.env.G_CLIENT_ID);
+console.log(process.env.G_API_KEY);
 
 Vue.use(Buefy);
 

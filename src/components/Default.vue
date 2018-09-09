@@ -1,5 +1,17 @@
 <template>
 <div>
+
+  <div class='authentification'>
+    <!-- if we aren't authorized we need a button for same -->
+    <button id="authorize_button" v-if='!gc_authorized' @click="handleAuthClick">Sign In</button>
+    <!-- <button id="signout_button" v-if='gc_authorized' @click="handleSignoutClick">Sign Out</button> -->
+  </div>
+  <hr>
+  <button v-if='gc_authorized' @click="createGCEvent">EventMe</button>
+  <!-- <div class="item-container" v-if="gc_authorized && gc_items">
+    <pre v-html="gc_items"></pre>
+  </div> -->
+
 <form @submit="testAppointment('fill this in w/ form data later')">
 <form-wizard @on-complete="onComplete"
 :start-index="4"
@@ -394,12 +406,29 @@
 
 <script>
 
+  // Client ID and API key from the Developer Console
+// const CLIENT_ID = '230137934084-ikbhaf92sv0g7i95gs74ojg2bahlsh24.apps.googleusercontent.com';
+// const API_KEY = 'AIzaSyBm5zyDSJlclRJv0ToTK2_r-DbYPveUam8';
+
+const CLIENT_ID = process.env.G_CLIENT_ID;
+const API_KEY = process.env.G_API_KEY;
+// Array of API discovery doc URLs for APIs used by the quickstart
+const DISCOVERY_DOCS = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'];
+// Authorization scopes required by the API; multiple scopes can be
+// included, separated by spaces.
+const SCOPES = 'https://www.googleapis.com/auth/calendar';
+
+
+
 import { db } from '../main'
 
 export default {
   name: 'Default',
   data () {
     return {
+       gc_items: undefined,
+      gc_api: undefined,
+      gc_authorized: false,
       "temp": {
     "agencyListChosen": ''
   },
@@ -432,7 +461,7 @@ export default {
       },
   "appointment": {
     "notes_nlfbma":"",
-    "appointment_date_final": "",
+    "appointment_calobj": {},
       "appointment_countadults": 1,
       "appointment_countchildren": 0,
     "communicatepref": "email",
@@ -581,6 +610,14 @@ export default {
       // ,agencies:db.collection('agencies')
     }
   },
+  created() {
+    this.gc_api = gapi;
+    this.handleClientLoad();
+  },
+  mounted() {
+  // console.log("NE:",process.env.NODE_ENV)
+  // console.log("process.env::",process.env)
+},
   methods: {
     add_client_addl(){
 this.clients.related.push({})
@@ -751,16 +788,158 @@ else {
       let nv = event.target.value.toLowerCase()
       this.appointment.wheelchair=nv
     }
+
+/** ---------------------------------------------------------- GCAL --------------- **/
+
+/**
+     *  On load, called to load the auth2 library and API client library.
+     */
+    ,handleClientLoad() {
+      this.gc_api.load('client:auth2', this.initClient);
+    }
+
+    /**
+     *  Initializes the API client library and sets up sign-in state
+     *  listeners.
+     */
+    ,initClient() {
+      let vm = this;
+
+      vm.gc_api.client.init({
+        apiKey: API_KEY,
+        clientId: CLIENT_ID,
+        discoveryDocs: DISCOVERY_DOCS,
+        scope: SCOPES
+      }).then(_ => {
+        // Listen for sign-in state changes.
+        vm.gc_api.auth2.getAuthInstance().isSignedIn.listen(vm.gc_authorized);
+      });
+    }
+
+    /**
+     *  Sign in the user upon button click.
+     */
+    ,handleAuthClick(event) {
+      Promise.resolve(this.gc_api.auth2.getAuthInstance().signIn())
+        .then(_ => {
+          this.gc_authorized = true;
+        });
+    }
+
+    /**
+     *  Sign out the user upon button click.
+     */
+    ,handleSignoutClick(event) {
+      Promise.resolve(this.gc_api.auth2.getAuthInstance().signOut())
+        .then(_ => {
+          this.gc_authorized = false;
+        });
+    }
+    ,createGCEvent(){
+
+      var event = {
+  'summary': 'Sample Event',
+  'location': '800 Howard St., San Francisco, CA 94103',
+  'description': 'we will see - bring a jacket',
+  'start': {
+    'dateTime': '2018-09-09T09:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
   },
+  'end': {
+    'dateTime': '2018-09-10T17:00:00-07:00',
+    'timeZone': 'America/Los_Angeles'
+  },
+  'recurrence': [
+    'RRULE:FREQ=DAILY;COUNT=1'
+  ],
+  'attendees': [],
+  'reminders': {
+    'useDefault': false,
+    'overrides': [
+      {'method': 'email', 'minutes': 24 * 60},
+      {'method': 'popup', 'minutes': 10}
+    ]
+  }
+};
+
+var request = gapi.client.calendar.events.insert({
+  'calendarId': 'primary',
+  'resource': event
+});
+
+var EV = request.execute(function(event){
+console.log(event);
+// this.appointment.appointment_calobj=event
+return event
+});
+
+console.log("EV:",EV);
+
+
+    }
+    /**
+     * Print the summary and start datetime/date of the next ten events in
+     * the authorized user's calendar. If no events are found an
+     * appropriate message is printed.
+     */
+    ,getData() {
+      let vm = this;
+
+      vm.gc_api.client.calendar.events.list({
+        'calendarId': 'primary',
+        'timeMin': (new Date()).toISOString(),
+        'showDeleted': false,
+        'singleEvents': true,
+        'maxResults': 10,
+        'orderBy': 'startTime'
+      }).then(response => {
+        vm.gc_items = this.syntaxHighlight(response.result.items);
+        console.log(vm.gc_items);
+      });
+    }
+
+,syntaxHighlight(json) {
+      if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, 2);
+      }
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, match => {
+        var cls = 'number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'key';
+          } else {
+            cls = 'string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'boolean';
+        } else if (/null/.test(match)) {
+          cls = 'null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    }
+
+
+/** ---------------------------------------------------------- /GCAL --------------- **/
+
+  },//methods
   computed: {
 
 }//computed
 }
 </script>
 
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-..wizard-nav-pills{
+
+.authentification {
+  margin: 20px;
+  text-align: center;
+}
+
+.wizard-nav-pills{
   width:50%;
 }
 h1, h2 {
